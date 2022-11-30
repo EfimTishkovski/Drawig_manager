@@ -17,7 +17,8 @@ gl_cursor = ''  # Глобальный курсор
 
 # Функция подключения к базе
 def connection_base():
-    base = sqlite3.connect('D:/PY/Drawings/Base data/Т5.1.db')
+    link = 'D:/G5/PY/Drawig_manager/Base data/Т5.1.db'
+    base = sqlite3.connect(link)
     cursor = base.cursor()
     global gl_base, gl_cursor
     gl_base = base
@@ -86,13 +87,15 @@ class Main_window(QMainWindow):
             self.statusBar().showMessage('Ошибка открытия базы')
 
     # Функция открытия чертежа
-    def show_drawing(self, link):
+    def show_drawing(self):
         try:
             if self.user_pdf_program:
                 pass
                 # Открытие прогой юзера
             else:
-                #path = self.
+                # Открытие прогой по умолчанию
+                #path = link
+                path = 'D:/G5/PY/Drawig_manager/draw_lib/Т5.1-10.11.001 - Боковина рамы.pdf'
                 os.startfile(path)
                 #os.startfile('D:/PY/Drawings/draw_lib/Т5.1-10.11.001 - Боковина рамы.pdf')
 
@@ -108,6 +111,19 @@ class Main_window(QMainWindow):
     def click_item(self):
         item = self.treeWidget.currentItem()
         print(item.text(0))
+        try:
+            if self.user_pdf_program:
+                pass
+                # Открытие прогой юзера
+            else:
+                # Открытие прогой по умолчанию
+                #path = link
+                path = 'draw_lib/Т5.1-10.11.001 - Боковина рамы.pdf'
+                # D:/G5/PY/Drawig_manager/draw_lib/Т5.1-10.11.001 - Боковина рамы.pdf
+                os.startfile(path)
+                #os.startfile('D:/PY/Drawings/draw_lib/Т5.1-10.11.001 - Боковина рамы.pdf')
+        except:
+            self.statusBar().showMessage('Ошибка открытия чертежа')
 
     def dublle_click_item(self):
         item = self.treeWidget.currentItem()
@@ -127,8 +143,8 @@ class Main_window(QMainWindow):
         self.launch.clicked.connect(self.show_tree_new)
         self.selectionButton.clicked.connect(self.select_base)
         #self.treeWidget.currentItemChanged.connect(self.click_item)
-        #self.treeWidget.itemClicked.connect(self.click_item)
-        self.treeWidget.itemDoubleClicked.connect(self.dublle_click_item)
+        self.treeWidget.itemClicked.connect(self.click_item)
+        #self.treeWidget.itemDoubleClicked.connect(self.dublle_click_item)
 
 
 
