@@ -79,10 +79,10 @@ class Main_window(QMainWindow):
     def select_base(self):
         try:
             basename = QFileDialog.getOpenFileName(self, 'Открыть файл', '', '*.db')[0]
-            relativ_path_to_base = basename.partition(self.work_dir)
             if basename:
+                global gl_base
+                gl_base = basename
                 print(basename)
-                print(relativ_path_to_base)
         except:
             self.statusBar().showMessage('Ошибка открытия базы')
 
@@ -92,21 +92,16 @@ class Main_window(QMainWindow):
             if self.user_pdf_program:
                 pass
                 # Открытие прогой юзера
+                # path_to_acrobat = self.patch_to_pdf  # Путь к проге заданной пользователем
+                # process = subprocess.Popen([path_to_acrobat, '/A', 'page = ALL', link], shell=False, stdout=subprocess.PIPE)
+                # process.wait()
             else:
                 # Открытие прогой по умолчанию
-                #path = link
-                path = 'D:/G5/PY/Drawig_manager/draw_lib/Т5.1-10.11.001 - Боковина рамы.pdf'
+                path = self.work_dir + 'Т5.1-10.11.001 - Боковина рамы.pdf'
                 os.startfile(path)
-                #os.startfile('D:/PY/Drawings/draw_lib/Т5.1-10.11.001 - Боковина рамы.pdf')
-
-
         except:
             self.statusBar().showMessage('Ошибка открытия чертежа')
 
-        os.startfile('D:/PY/Drawings/draw_lib/Т5.1-10.11.001 - Боковина рамы')
-            # path_to_acrobat = self.patch_to_pdf  # Путь к проге заданной пользователем
-            # process = subprocess.Popen([path_to_acrobat, '/A', 'page = ALL', link], shell=False, stdout=subprocess.PIPE)
-            # process.wait()
 
     def click_item(self):
         item = self.treeWidget.currentItem()
@@ -138,12 +133,12 @@ class Main_window(QMainWindow):
 
         # Переменные
         self.user_pdf_program = False  # Флаг выбора пользовательской проги для pdf
-        self.work_dir = ''             # Рабочая папка
+        self.work_dir = 'D:/G5/PY/Drawig_manager/draw_lib/'  # Рабочая папка
 
         self.launch.clicked.connect(self.show_tree_new)
         self.selectionButton.clicked.connect(self.select_base)
         #self.treeWidget.currentItemChanged.connect(self.click_item)
-        self.treeWidget.itemClicked.connect(self.click_item)
+        self.treeWidget.itemClicked.connect(self.show_drawing)
         #self.treeWidget.itemDoubleClicked.connect(self.dublle_click_item)
 
 
