@@ -7,7 +7,7 @@ import subprocess
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog
 from PyQt5.uic import loadUi
-from PyQt5 import QtCore
+from PyQt5.QtCore import Qt
 
 from controller import *
 
@@ -82,6 +82,7 @@ class Main_window(QMainWindow):
             if basename:
                 global gl_base
                 gl_base = basename
+                self.base_line.setText(basename)
                 print(basename)
         except:
             self.statusBar().showMessage('Ошибка открытия базы')
@@ -104,6 +105,14 @@ class Main_window(QMainWindow):
         except:
             self.statusBar().showMessage('Ошибка открытия чертежа')
 
+    # Функция отслеживания состояния чекбокса редактирования
+    def draw_edit_state(self, state):
+        if state == Qt.Checked:
+            self.drawing_edit_window.setEnabled(True)
+        else:
+            self.drawing_edit_window.setEnabled(False)
+
+
 
     def dublle_click_item(self):
         item = self.treeWidget.currentItem()
@@ -114,7 +123,10 @@ class Main_window(QMainWindow):
     def __init__(self):
         super(Main_window, self).__init__()
         loadUi('Form.ui', self)
-        connection_base()
+        #connection_base()
+
+        # Настройки при запуске
+        self.drawing_edit_window.setEnabled(False) # Окно редактирования не активно
 
         # Переменные
         self.user_pdf_program = False  # Флаг выбора пользовательской проги для pdf
@@ -125,6 +137,7 @@ class Main_window(QMainWindow):
         #self.treeWidget.currentItemChanged.connect(self.click_item)
         self.treeWidget.itemClicked.connect(self.show_drawing)
         #self.treeWidget.itemDoubleClicked.connect(self.dublle_click_item)
+        self.checkBox_edit.stateChanged.connect(self.draw_edit_state)   # Обработчик состояния чекбокса редактирования
 
 
 
