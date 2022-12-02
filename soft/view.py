@@ -89,6 +89,8 @@ class Main_window(QMainWindow):
     # Функция открытия чертежа
     def show_drawing(self):
         try:
+            item = self.treeWidget.currentItem()
+            print(item.text(0))
             if self.user_pdf_program:
                 pass
                 # Открытие прогой юзера
@@ -102,23 +104,6 @@ class Main_window(QMainWindow):
         except:
             self.statusBar().showMessage('Ошибка открытия чертежа')
 
-
-    def click_item(self):
-        item = self.treeWidget.currentItem()
-        print(item.text(0))
-        try:
-            if self.user_pdf_program:
-                pass
-                # Открытие прогой юзера
-            else:
-                # Открытие прогой по умолчанию
-                #path = link
-                path = 'draw_lib/Т5.1-10.11.001 - Боковина рамы.pdf'
-                # D:/G5/PY/Drawig_manager/draw_lib/Т5.1-10.11.001 - Боковина рамы.pdf
-                os.startfile(path)
-                #os.startfile('D:/PY/Drawings/draw_lib/Т5.1-10.11.001 - Боковина рамы.pdf')
-        except:
-            self.statusBar().showMessage('Ошибка открытия чертежа')
 
     def dublle_click_item(self):
         item = self.treeWidget.currentItem()
