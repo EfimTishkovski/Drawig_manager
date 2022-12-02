@@ -113,6 +113,9 @@ class Main_window(QMainWindow):
             self.drawing_edit_window.setEnabled(False)
 
 
+    # Дописать указание рабочей папки с чертежами
+    # Завести файлик system для сохранения настроек
+
 
     def dublle_click_item(self):
         item = self.treeWidget.currentItem()
