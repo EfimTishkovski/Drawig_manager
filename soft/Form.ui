@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1207</width>
-    <height>629</height>
+    <height>675</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,10 +25,10 @@
    <widget class="QTreeWidget" name="treeWidget">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>120</y>
-      <width>761</width>
-      <height>381</height>
+      <x>10</x>
+      <y>130</y>
+      <width>760</width>
+      <height>380</height>
      </rect>
     </property>
     <property name="font">
@@ -55,8 +55,8 @@ border-color: rgb(255, 85, 127);</string>
    <widget class="QPushButton" name="launch">
     <property name="geometry">
      <rect>
-      <x>670</x>
-      <y>530</y>
+      <x>680</x>
+      <y>580</y>
       <width>111</width>
       <height>41</height>
      </rect>
@@ -113,7 +113,7 @@ border-color: rgb(255, 85, 127);</string>
     <property name="geometry">
      <rect>
       <x>470</x>
-      <y>530</y>
+      <y>580</y>
       <width>181</width>
       <height>31</height>
      </rect>
@@ -134,9 +134,9 @@ border-color: rgb(255, 85, 127);</string>
     <property name="geometry">
      <rect>
       <x>800</x>
-      <y>120</y>
-      <width>391</width>
-      <height>311</height>
+      <y>130</y>
+      <width>390</width>
+      <height>310</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -273,7 +273,7 @@ border-color: rgb(255, 85, 127);</string>
      <string>База</string>
     </property>
    </widget>
-   <widget class="QTextEdit" name="base_line_2">
+   <widget class="QTextEdit" name="work_dir_line">
     <property name="geometry">
      <rect>
       <x>650</x>
@@ -281,6 +281,11 @@ border-color: rgb(255, 85, 127);</string>
       <width>380</width>
       <height>40</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -324,6 +329,24 @@ border-color: rgb(255, 85, 127);</string>
     </property>
     <property name="text">
      <string>Рабочая папка с чертежами</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="work_dir_checkBox">
+    <property name="geometry">
+     <rect>
+      <x>650</x>
+      <y>100</y>
+      <width>121</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Запомнить</string>
     </property>
    </widget>
   </widget>

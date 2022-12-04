@@ -1,5 +1,6 @@
 import sqlite3
 import json
+import controller
 
 
 BASE = sqlite3.connect('D:/G5/Drawings/Base data/Т5.1.db')
@@ -43,6 +44,4 @@ def generate_model(base, cursor, mass):
     return out_mass
 
 if __name__ == '__main__':
-    first_data = base_connect()
-    data = generate_model(BASE, CURSOR, first_data)
-    print(data)
+    print(controller.settings_load())

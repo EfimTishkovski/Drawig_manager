@@ -113,27 +113,29 @@ class Main_window(QMainWindow):
             self.drawing_edit_window.setEnabled(False)
 
 
-    # Дописать указание рабочей папки с чертежами
-    # Завести файлик system для сохранения настроек
-
-
     def dublle_click_item(self):
         item = self.treeWidget.currentItem()
         print(item.text(0) + 'двойной клик')
         os.startfile('D:/PY/Drawings/draw_lib/Т5.1-10.11.001 - Боковина рамы.pdf')
+
+    # Допистать указание пути к рабочей папке, функционал чакбокса запомнить(для рабочей папки)
+    # Дописать указание адреса (ссылки) чертежа
 
 
     def __init__(self):
         super(Main_window, self).__init__()
         loadUi('Form.ui', self)
         #connection_base()
+        settings = settings_load()                  # Загрузка сохранённых настроек
 
         # Настройки при запуске
-        self.drawing_edit_window.setEnabled(False) # Окно редактирования не активно
+        self.drawing_edit_window.setEnabled(False)  # Окно редактирования не активно
 
         # Переменные
-        self.user_pdf_program = False  # Флаг выбора пользовательской проги для pdf
-        self.work_dir = 'D:/G5/PY/Drawig_manager/draw_lib/'  # Рабочая папка
+        self.user_pdf_program = False                # Флаг выбора пользовательской проги для pdf
+        self.work_dir = settings[0]['work_dir']      # Рабочая папка #'D:/G5/PY/Drawig_manager/draw_lib/'
+
+        self.work_dir_line.setText(self.work_dir)
 
         self.launch.clicked.connect(self.show_tree_new)
         self.selectionButton.clicked.connect(self.select_base)

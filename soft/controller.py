@@ -110,11 +110,21 @@ def model(cursor_in_model, mode='generate'):
     if mode == 'update':
         pass
 
+# Функция загрузки настроек
+def settings_load():
+    connection = sqlite3.connect('system_settings.db')
+    cursor = connection.cursor()
+    query = 'SELECT * FROM user_settings'
+    cursor.execute(query)
+    data = cursor.fetchall()
+    out = list()
+    for line in data:
+        temp = {}
+        temp[line[0]] = line[1]
+        out.append(temp)
+    return out
+
+
 
 if __name__ == "__main__":
-    base = sqlite3.connect('D:/G5/Drawings/Base data/Т5.1.db')
-    cursor = base.cursor()
-
-    model(cursor, mode='generate')
-    out = model(cursor, mode='view')
-    print(out)
+    print(settings_load())
