@@ -3,8 +3,8 @@ import json
 import controller
 
 
-BASE = sqlite3.connect('D:/G5/Drawings/Base data/Т5.1.db')
-CURSOR = BASE.cursor()
+#BASE = sqlite3.connect('D:/G5/Drawings/Base data/Т5.1.db')
+#CURSOR = BASE.cursor()
 
 def base_connect():
     base = sqlite3.connect('D:/G5/Drawings/Base data/Т5.1.db')
@@ -44,4 +44,4 @@ def generate_model(base, cursor, mass):
     return out_mass
 
 if __name__ == '__main__':
-    print(controller.settings_load())
+    print(controller.update_settings(name_setting='work_dir', new_state='Абахумбар'))

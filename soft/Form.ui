@@ -291,7 +291,7 @@ border-color: rgb(255, 85, 127);</string>
      <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="selectionButton_2">
+   <widget class="QPushButton" name="selection_work_dir_Button">
     <property name="geometry">
      <rect>
       <x>1060</x>

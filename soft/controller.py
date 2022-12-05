@@ -122,7 +122,23 @@ def settings_load():
         temp = {}
         temp[line[0]] = line[1]
         out.append(temp)
+    cursor.close()
+    connection.close()
     return out
+
+# Функция обновления настроек
+def update_settings(name_setting, new_state):
+    try:
+        connection = sqlite3.connect('system_settings.db')
+        cursor = connection.cursor()
+        query = 'UPDATE user_settings SET value = ? WHERE name = ?'
+        cursor.execute(query, (new_state, name_setting))
+        connection.commit()
+        cursor.close()
+        connection.close()
+        return True
+    except:
+        return False
 
 
 

@@ -112,6 +112,25 @@ class Main_window(QMainWindow):
         else:
             self.drawing_edit_window.setEnabled(False)
 
+    # Функция отслеживания состояния чекбокса папки с чертежами
+    def work_dir_state(self, state):
+        if state == Qt.Checked:
+            user_work_dir = self.work_dir_line.toPlainText()
+            answer_metod = update_settings(name_setting='work_dir', new_state=user_work_dir)
+            if answer_metod:
+                self.statusBar().showMessage('Рабочая папка сохранена')
+            else:
+                self.statusBar().showMessage('Ошибка сохранения рабочей папки')
+
+    # Функция указания пути к рабочей папке
+    def select_work_dir(self):
+        try:
+            work_dir = QFileDialog.getExistingDirectory(self, 'Выберите рабочую папку', '') + '/'
+            if work_dir:
+                self.work_dir_line.setText(work_dir)
+        except:
+            self.statusBar().showMessage('Ошибка указания рабочей папки')
+
 
     def dublle_click_item(self):
         item = self.treeWidget.currentItem()
@@ -130,6 +149,7 @@ class Main_window(QMainWindow):
 
         # Настройки при запуске
         self.drawing_edit_window.setEnabled(False)  # Окно редактирования не активно
+        #self.work_dir_checkBox.setEnabled(False)    # Галка запомнить рабочую папку снята
 
         # Переменные
         self.user_pdf_program = False                # Флаг выбора пользовательской проги для pdf
@@ -138,12 +158,13 @@ class Main_window(QMainWindow):
         self.work_dir_line.setText(self.work_dir)
 
         self.launch.clicked.connect(self.show_tree_new)
-        self.selectionButton.clicked.connect(self.select_base)
+        self.selectionButton.clicked.connect(self.select_base)                # Указание базы
+        self.selection_work_dir_Button.clicked.connect(self.select_work_dir)  # Указание рабочей папки
         #self.treeWidget.currentItemChanged.connect(self.click_item)
         self.treeWidget.itemClicked.connect(self.show_drawing)
         #self.treeWidget.itemDoubleClicked.connect(self.dublle_click_item)
-        self.checkBox_edit.stateChanged.connect(self.draw_edit_state)   # Обработчик состояния чекбокса редактирования
-
+        self.checkBox_edit.stateChanged.connect(self.draw_edit_state)     # Обработчик состояния чекбокса редактирования
+        self.work_dir_checkBox.stateChanged.connect(self.work_dir_state)  # Обработчик состояния чекбокса рабочей папки
 
 
 # Запуск
