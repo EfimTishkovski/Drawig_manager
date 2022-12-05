@@ -16,8 +16,8 @@ gl_cursor = ''  # Глобальный курсор
 
 
 # Функция подключения к базе
-def connection_base():
-    link = 'D:/G5/PY/Drawig_manager/Base data/Т5.1.db'
+def connection_base(link):
+    #link = 'D:/G5/PY/Drawig_manager/Base data/Т5.1.db'
     base = sqlite3.connect(link)
     cursor = base.cursor()
     global gl_base, gl_cursor
@@ -122,6 +122,16 @@ class Main_window(QMainWindow):
             else:
                 self.statusBar().showMessage('Ошибка сохранения рабочей папки')
 
+    # Функция отслеживания состояния чекбокса базы
+    def work_base_state(self, state):
+        if state == Qt.Checked:
+            current_base = self.base_line.toPlainText()
+            answer_metod = update_settings(name_setting='base', new_state=current_base)
+            if answer_metod:
+                self.statusBar().showMessage('База по умолчанию')
+            else:
+                self.statusBar().showMessage('Ошибка назаначения базы по умолчанию')
+
     # Функция указания пути к рабочей папке
     def select_work_dir(self):
         try:
@@ -154,8 +164,12 @@ class Main_window(QMainWindow):
         # Переменные
         self.user_pdf_program = False                # Флаг выбора пользовательской проги для pdf
         self.work_dir = settings[0]['work_dir']      # Рабочая папка #'D:/G5/PY/Drawig_manager/draw_lib/'
+        self.base = settings[1]['base']              # База
+
+        connection_base(self.base)
 
         self.work_dir_line.setText(self.work_dir)
+        self.base_line.setText(self.base)
 
         self.launch.clicked.connect(self.show_tree_new)
         self.selectionButton.clicked.connect(self.select_base)                # Указание базы
@@ -165,6 +179,7 @@ class Main_window(QMainWindow):
         #self.treeWidget.itemDoubleClicked.connect(self.dublle_click_item)
         self.checkBox_edit.stateChanged.connect(self.draw_edit_state)     # Обработчик состояния чекбокса редактирования
         self.work_dir_checkBox.stateChanged.connect(self.work_dir_state)  # Обработчик состояния чекбокса рабочей папки
+        self.base_checkBox.stateChanged.connect(self.work_base_state)     # Обработчик состояния чекбокса базы
 
 
 # Запуск
