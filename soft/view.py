@@ -105,12 +105,36 @@ class Main_window(QMainWindow):
         except:
             self.statusBar().showMessage('Ошибка открытия чертежа')
 
+    # Функция редактирования чертежа
+    def edit_drawing(self):
+        try:
+            item = self.treeWidget.currentItem()
+            number = item.text(0)
+            query = 'SELECT name, link FROM components WHERE number = ?'
+            gl_cursor.execute(query, (number,))
+            data = gl_cursor.fetchall()[0]
+            self.number_line.setText(number)
+            self.name_line.setText(data[0])
+            self.link_line.setText(data[1])
+        except:
+            self.statusBar().showMessage('Ошибка редактирования чертежа')
+
+    # Функция обработки нажатия на строку дерева(открытие или редактирование)
+    def click_line(self):
+        if self.drawing_edit_flag:
+            self.edit_drawing()
+        else:
+            self.show_drawing()
+
+
     # Функция отслеживания состояния чекбокса редактирования
     def draw_edit_state(self, state):
         if state == Qt.Checked:
             self.drawing_edit_window.setEnabled(True)
+            self.drawing_edit_flag = True
         else:
             self.drawing_edit_window.setEnabled(False)
+            self.drawing_edit_flag = False
 
     # Функция отслеживания состояния чекбокса папки с чертежами
     def work_dir_state(self, state):
@@ -147,7 +171,7 @@ class Main_window(QMainWindow):
         print(item.text(0) + 'двойной клик')
         os.startfile('D:/PY/Drawings/draw_lib/Т5.1-10.11.001 - Боковина рамы.pdf')
 
-    # Допистать указание пути к рабочей папке, функционал чакбокса запомнить(для рабочей папки)
+
     # Дописать указание адреса (ссылки) чертежа
 
 
@@ -165,6 +189,7 @@ class Main_window(QMainWindow):
         self.user_pdf_program = False                # Флаг выбора пользовательской проги для pdf
         self.work_dir = settings[0]['work_dir']      # Рабочая папка #'D:/G5/PY/Drawig_manager/draw_lib/'
         self.base = settings[1]['base']              # База
+        self.drawing_edit_flag = False               # Флаг редактирования чертежа
 
         connection_base(self.base)
 
@@ -175,7 +200,7 @@ class Main_window(QMainWindow):
         self.selectionButton.clicked.connect(self.select_base)                # Указание базы
         self.selection_work_dir_Button.clicked.connect(self.select_work_dir)  # Указание рабочей папки
         #self.treeWidget.currentItemChanged.connect(self.click_item)
-        self.treeWidget.itemClicked.connect(self.show_drawing)
+        self.treeWidget.itemClicked.connect(self.click_line)              # Обработчик нажатия на строку
         #self.treeWidget.itemDoubleClicked.connect(self.dublle_click_item)
         self.checkBox_edit.stateChanged.connect(self.draw_edit_state)     # Обработчик состояния чекбокса редактирования
         self.work_dir_checkBox.stateChanged.connect(self.work_dir_state)  # Обработчик состояния чекбокса рабочей папки
