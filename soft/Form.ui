@@ -152,7 +152,7 @@ border-color: rgb(255, 85, 127);</string>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>60</y>
+       <y>70</y>
        <width>61</width>
        <height>41</height>
       </rect>
@@ -188,7 +188,7 @@ border-color: rgb(255, 85, 127);</string>
      <property name="geometry">
       <rect>
        <x>120</x>
-       <y>140</y>
+       <y>130</y>
        <width>260</width>
        <height>40</height>
       </rect>
@@ -206,7 +206,7 @@ border-color: rgb(255, 85, 127);</string>
      <property name="geometry">
       <rect>
        <x>120</x>
-       <y>210</y>
+       <y>190</y>
        <width>260</width>
        <height>40</height>
       </rect>
@@ -242,7 +242,7 @@ border-color: rgb(255, 85, 127);</string>
      <property name="geometry">
       <rect>
        <x>20</x>
-       <y>210</y>
+       <y>190</y>
        <width>81</width>
        <height>41</height>
       </rect>
@@ -272,6 +272,48 @@ border-color: rgb(255, 85, 127);</string>
      </property>
      <property name="text">
       <string>Редактировние чертежа</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton">
+     <property name="geometry">
+      <rect>
+       <x>240</x>
+       <y>255</y>
+       <width>140</width>
+       <height>40</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(132, 200, 86);</string>
+     </property>
+     <property name="text">
+      <string>Новая ссылка</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>255</y>
+       <width>110</width>
+       <height>40</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(130, 166, 200);</string>
+     </property>
+     <property name="text">
+      <string>Сохранить</string>
      </property>
     </widget>
    </widget>
