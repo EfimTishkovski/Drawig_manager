@@ -140,6 +140,18 @@ def update_settings(name_setting, new_state):
     except:
         return False
 
+# Функция записи в основную базу
+def write_to_base(base, cursor, data):
+    try:
+        query = 'UPDATE components SET link = ? WHERE number = ?'
+        cursor.execute(query, (data[0], data[1]))
+        base.commit()
+        return True
+    except sqlite3.Error as error:
+        print(error)
+        return False
+
+
 
 
 if __name__ == "__main__":

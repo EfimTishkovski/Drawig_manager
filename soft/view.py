@@ -101,7 +101,8 @@ class Main_window(QMainWindow):
                 # process.wait()
             else:
                 # Открытие прогой по умолчанию
-                path = self.work_dir + 'Т5.1-10.11.001 - Боковина рамы.pdf'
+                print(self.work_dir + item.text(0) + '.pdf')
+                path = self.work_dir + item #'Т5.1-10.11.001 - Боковина рамы.pdf'
                 os.startfile(path)
         except:
             self.statusBar().showMessage('Ошибка открытия чертежа')
@@ -166,15 +167,31 @@ class Main_window(QMainWindow):
         except:
             self.statusBar().showMessage('Ошибка указания рабочей папки')
 
-
+    """
     def dublle_click_item(self):
         item = self.treeWidget.currentItem()
         print(item.text(0) + 'двойной клик')
-        os.startfile('D:/PY/Drawings/draw_lib/Т5.1-10.11.001 - Боковина рамы.pdf')
+        # os.startfile('D:/PY/Drawings/draw_lib/Т5.1-10.11.001 - Боковина рамы.pdf')
+        os.startfile(self.work_dir + 'Т5.1-10.11.001 - Боковина рамы.pdf')
+    """
 
     # Функция указания ссылки на чертёж
     def new_link(self):
-        print('new link')
+        direktory = self.work_dir_line.toPlainText()
+        new_link = QFileDialog.getOpenFileName(self, 'Открыть файл', direktory, '*.pdf')[0]
+        new_link = new_link.split('/')[-1]
+        self.link_line.setText(new_link)
+        print(new_link)
+
+    # Функция сохранения новой ссылки
+    def new_link_save(self):
+        link = self.link_line.toPlainText()
+        number = self.number_line.text()
+        answer_base = write_to_base(gl_base, gl_cursor, (link, number))
+        if answer_base:
+            self.statusBar().showMessage('Изменения сохранены')
+        else:
+            self.statusBar().showMessage('Ошибка сохранения изменений')
 
 
     def __init__(self):
@@ -207,7 +224,8 @@ class Main_window(QMainWindow):
         self.checkBox_edit.stateChanged.connect(self.draw_edit_state)     # Обработчик состояния чекбокса редактирования
         self.work_dir_checkBox.stateChanged.connect(self.work_dir_state)  # Обработчик состояния чекбокса рабочей папки
         self.base_checkBox.stateChanged.connect(self.work_base_state)     # Обработчик состояния чекбокса базы
-        self.new_link_Button.clicked.connect(self.new_link)
+        self.new_link_Button.clicked.connect(self.new_link)               # Указание новой ссылки на чертёж
+        self.save_change_Button.clicked.connect(self.new_link_save)       # Сохранение новой ссылки
 
 
 # Запуск
