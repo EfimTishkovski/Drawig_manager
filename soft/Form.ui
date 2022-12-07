@@ -274,7 +274,7 @@ border-color: rgb(255, 85, 127);</string>
       <string>Редактировние чертежа</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="new_link_Button">
      <property name="geometry">
       <rect>
        <x>240</x>
@@ -295,7 +295,7 @@ border-color: rgb(255, 85, 127);</string>
       <string>Новая ссылка</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_2">
+    <widget class="QPushButton" name="save_change_Button">
      <property name="geometry">
       <rect>
        <x>20</x>

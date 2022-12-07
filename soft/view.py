@@ -172,8 +172,9 @@ class Main_window(QMainWindow):
         print(item.text(0) + 'двойной клик')
         os.startfile('D:/PY/Drawings/draw_lib/Т5.1-10.11.001 - Боковина рамы.pdf')
 
-
-    # Дописать указание адреса (ссылки) чертежа
+    # Функция указания ссылки на чертёж
+    def new_link(self):
+        print('new link')
 
 
     def __init__(self):
@@ -206,6 +207,7 @@ class Main_window(QMainWindow):
         self.checkBox_edit.stateChanged.connect(self.draw_edit_state)     # Обработчик состояния чекбокса редактирования
         self.work_dir_checkBox.stateChanged.connect(self.work_dir_state)  # Обработчик состояния чекбокса рабочей папки
         self.base_checkBox.stateChanged.connect(self.work_base_state)     # Обработчик состояния чекбокса базы
+        self.new_link_Button.clicked.connect(self.new_link)
 
 
 # Запуск
