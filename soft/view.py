@@ -17,13 +17,15 @@ gl_cursor = ''  # Глобальный курсор
 
 # Функция подключения к базе
 def connection_base(link):
-    #link = 'D:/G5/PY/Drawig_manager/Base data/Т5.1.db'
-    base = sqlite3.connect(link)
-    cursor = base.cursor()
-    global gl_base, gl_cursor
-    gl_base = base
-    gl_cursor = cursor
-    print("Соединение с базой")
+    try:
+        base = sqlite3.connect(link)
+        cursor = base.cursor()
+        global gl_base, gl_cursor
+        gl_base = base
+        gl_cursor = cursor
+        print("Соединение с базой")
+    except:
+        print('Соединения с базой нет')
 
 
 class Main_window(QMainWindow):
@@ -32,7 +34,6 @@ class Main_window(QMainWindow):
     def show_tree_new(self):
         # Получение данных по модели базы
         data = model(gl_cursor, mode='view')[0]
-        #print(data)
 
         # Корневой/первичный элемент
         name_first_element = data['number']
