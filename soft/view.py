@@ -92,18 +92,23 @@ class Main_window(QMainWindow):
     def show_drawing(self):
         try:
             item = self.treeWidget.currentItem()
-            print(item.text(0))
-            if self.user_pdf_program:
-                pass
-                # Открытие прогой юзера
-                # path_to_acrobat = self.patch_to_pdf  # Путь к проге заданной пользователем
-                # process = subprocess.Popen([path_to_acrobat, '/A', 'page = ALL', link], shell=False, stdout=subprocess.PIPE)
-                # process.wait()
+            number = item.text(0)
+            path = link_of_drawing(gl_cursor, number_drawing=number)
+            if path[0] is not None:
+                print(path[0])
+                if self.user_pdf_program:
+                    pass
+                    # Открытие прогой юзера
+                    # path_to_acrobat = self.patch_to_pdf  # Путь к проге заданной пользователем
+                    # process = subprocess.Popen([path_to_acrobat, '/A', 'page = ALL', link], shell=False, stdout=subprocess.PIPE)
+                    # process.wait()
+                else:
+                    # Открытие прогой по умолчанию
+                    full_path = self.work_dir + path[0]
+                    print(full_path)
+                    os.startfile(full_path)
             else:
-                # Открытие прогой по умолчанию
-                print(self.work_dir + item.text(0) + '.pdf')
-                path = self.work_dir + item #'Т5.1-10.11.001 - Боковина рамы.pdf'
-                os.startfile(path)
+                self.statusBar().showMessage('Не задана ссылка на чертёж')
         except:
             self.statusBar().showMessage('Ошибка открытия чертежа')
 

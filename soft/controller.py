@@ -151,6 +151,12 @@ def write_to_base(base, cursor, data):
         print(error)
         return False
 
+# Функция полученя ссылки чертежа из базы
+def link_of_drawing(cursor, number_drawing):
+    query = 'SELECT link FROM components WHERE number = ?'
+    cursor.execute(query, (number_drawing, ))
+    data = cursor.fetchall()
+    return data[0]
 
 
 
