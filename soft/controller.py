@@ -5,6 +5,12 @@ import copy
 
 # Функция получения данных из базы
 def get_data_from_base(cursor):
+    """
+    Функция получения данных из базы
+    :param cursor: Курсор, объект БД
+    :return: массив со всеми компонентами базы, массиб со всеми связями в базе
+    что куда входит
+    """
     # Данные из БД по компонентам
     query = 'SELECT * FROM components'
     cursor.execute(query)
@@ -35,6 +41,12 @@ def get_data_from_base(cursor):
 
 # Обновление/создание модели
 def model(cursor_in_model, mode='generate'):
+    """
+    Функция создания модели БД
+    :param cursor_in_model: Курсор, объект БД
+    :param mode: чтение/запись/просмотр
+    :return: возвращает модель БД в виде словаря со множественными вложениями
+    """
     # Создание
     if mode == 'generate':
         data_components, data_connections = get_data_from_base(cursor_in_model)  # Получение данных из базы
@@ -112,22 +124,36 @@ def model(cursor_in_model, mode='generate'):
 
 # Функция загрузки настроек
 def settings_load():
-    connection = sqlite3.connect('system_settings.db')
-    cursor = connection.cursor()
-    query = 'SELECT * FROM user_settings'
-    cursor.execute(query)
-    data = cursor.fetchall()
-    out = list()
-    for line in data:
-        temp = {}
-        temp[line[0]] = line[1]
-        out.append(temp)
-    cursor.close()
-    connection.close()
-    return out
+    """
+    Функция загрузки настроек
+    :return: массив с данными по настройкам
+    """
+    try:
+        connection = sqlite3.connect('system_settings.db')
+        cursor = connection.cursor()
+        query = 'SELECT * FROM user_settings'
+        cursor.execute(query)
+        data = cursor.fetchall()
+        out = list()
+        for line in data:
+            temp = {}
+            temp[line[0]] = line[1]
+            out.append(temp)
+        cursor.close()
+        connection.close()
+        return out
+    except:
+        out = []
+        return out
 
 # Функция обновления настроек
 def update_settings(name_setting, new_state):
+    """
+    Функция обновления настроек
+    :param name_setting: Название настройки
+    :param new_state: Новые данные по настройке
+    :return: успешно / неуспешно
+    """
     try:
         connection = sqlite3.connect('system_settings.db')
         cursor = connection.cursor()
@@ -142,6 +168,13 @@ def update_settings(name_setting, new_state):
 
 # Функция записи в основную базу
 def write_to_base(base, cursor, data):
+    """
+    Функция записи в основную базу
+    :param base: Объект базы
+    :param cursor: Объект курсора
+    :param data: данные для записи
+    :return: успешно / неуспешно
+    """
     try:
         query = 'UPDATE components SET link = ? WHERE number = ?'
         cursor.execute(query, (data[0], data[1]))
@@ -153,6 +186,12 @@ def write_to_base(base, cursor, data):
 
 # Функция полученя ссылки чертежа из базы
 def link_of_drawing(cursor, number_drawing):
+    """
+    Функция полученя ссылки чертежа из базы
+    :param cursor: Объект курсора
+    :param number_drawing: номер чертежа
+    :return: ссылка из базы
+    """
     query = 'SELECT link FROM components WHERE number = ?'
     cursor.execute(query, (number_drawing, ))
     data = cursor.fetchall()

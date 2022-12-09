@@ -95,7 +95,6 @@ class Main_window(QMainWindow):
             number = item.text(0)
             path = link_of_drawing(gl_cursor, number_drawing=number)
             if path[0] is not None:
-                print(path[0])
                 if self.user_pdf_program:
                     pass
                     # Открытие прогой юзера
@@ -105,7 +104,6 @@ class Main_window(QMainWindow):
                 else:
                     # Открытие прогой по умолчанию
                     full_path = self.work_dir + path[0]
-                    print(full_path)
                     os.startfile(full_path)
             else:
                 self.statusBar().showMessage('Не задана ссылка на чертёж')
@@ -126,6 +124,7 @@ class Main_window(QMainWindow):
         except:
             self.statusBar().showMessage('Ошибка редактирования чертежа')
 
+
     # Функция обработки нажатия на строку дерева(открытие или редактирование)
     def click_line(self):
         if self.drawing_edit_flag:
@@ -143,6 +142,7 @@ class Main_window(QMainWindow):
             self.drawing_edit_window.setEnabled(False)
             self.drawing_edit_flag = False
 
+
     # Функция отслеживания состояния чекбокса папки с чертежами
     def work_dir_state(self, state):
         if state == Qt.Checked:
@@ -152,6 +152,7 @@ class Main_window(QMainWindow):
                 self.statusBar().showMessage('Рабочая папка сохранена')
             else:
                 self.statusBar().showMessage('Ошибка сохранения рабочей папки')
+
 
     # Функция отслеживания состояния чекбокса базы
     def work_base_state(self, state):
@@ -163,6 +164,7 @@ class Main_window(QMainWindow):
             else:
                 self.statusBar().showMessage('Ошибка назаначения базы по умолчанию')
 
+
     # Функция указания пути к рабочей папке
     def select_work_dir(self):
         try:
@@ -172,13 +174,6 @@ class Main_window(QMainWindow):
         except:
             self.statusBar().showMessage('Ошибка указания рабочей папки')
 
-    """
-    def dublle_click_item(self):
-        item = self.treeWidget.currentItem()
-        print(item.text(0) + 'двойной клик')
-        # os.startfile('D:/PY/Drawings/draw_lib/Т5.1-10.11.001 - Боковина рамы.pdf')
-        os.startfile(self.work_dir + 'Т5.1-10.11.001 - Боковина рамы.pdf')
-    """
 
     # Функция указания ссылки на чертёж
     def new_link(self):
@@ -186,7 +181,7 @@ class Main_window(QMainWindow):
         new_link = QFileDialog.getOpenFileName(self, 'Открыть файл', direktory, '*.pdf')[0]
         new_link = new_link.split('/')[-1]
         self.link_line.setText(new_link)
-        print(new_link)
+
 
     # Функция сохранения новой ссылки
     def new_link_save(self):
@@ -202,12 +197,10 @@ class Main_window(QMainWindow):
     def __init__(self):
         super(Main_window, self).__init__()
         loadUi('Form.ui', self)
-        #connection_base()
         settings = settings_load()                  # Загрузка сохранённых настроек
 
         # Настройки при запуске
         self.drawing_edit_window.setEnabled(False)  # Окно редактирования не активно
-        #self.work_dir_checkBox.setEnabled(False)    # Галка запомнить рабочую папку снята
 
         # Переменные
         self.user_pdf_program = False                # Флаг выбора пользовательской проги для pdf
@@ -223,7 +216,6 @@ class Main_window(QMainWindow):
         self.launch.clicked.connect(self.show_tree_new)
         self.selectionButton.clicked.connect(self.select_base)                # Указание базы
         self.selection_work_dir_Button.clicked.connect(self.select_work_dir)  # Указание рабочей папки
-        #self.treeWidget.currentItemChanged.connect(self.click_item)
         self.treeWidget.itemClicked.connect(self.click_line)              # Обработчик нажатия на строку
         #self.treeWidget.itemDoubleClicked.connect(self.dublle_click_item)
         self.checkBox_edit.stateChanged.connect(self.draw_edit_state)     # Обработчик состояния чекбокса редактирования
