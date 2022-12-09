@@ -94,7 +94,18 @@ class Main_window(QMainWindow):
             item = self.treeWidget.currentItem()
             number = item.text(0)
             path = link_of_drawing(gl_cursor, number_drawing=number)
-            if path[0] is not None:
+            assembly_flag = False
+            # Определение сборка/чертёж
+            # Лучше реализовать через получение данных из базы в виде массива при загрузке
+            # И выполнять проверку через поиск в массиве
+            # def get_data_from_base
+            count = item.childCount()
+            #count = self.treeWidget.currentItem.childCount()
+            print(count)
+            if number[:-1] == 0 or number[:-1] == 5:
+                assembly_flag = True
+            if path[0] is not None and assembly_flag is False:
+                # Открытие чертежа
                 if self.user_pdf_program:
                     pass
                     # Открытие прогой юзера
@@ -105,6 +116,9 @@ class Main_window(QMainWindow):
                     # Открытие прогой по умолчанию
                     full_path = self.work_dir + path[0]
                     os.startfile(full_path)
+            elif assembly_flag:
+                # Открытие сборки
+                os.startfile('D:/PY/Drawings/draw_lib/Т5.1-10.00.094-A  Стенка.pdf')
             else:
                 self.statusBar().showMessage('Не задана ссылка на чертёж')
         except:
