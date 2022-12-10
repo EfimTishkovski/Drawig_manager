@@ -97,14 +97,20 @@ class Main_window(QMainWindow):
             for line in self.data_components:
                 if line['number'] == number:
                     component_type = line['attribute']
+                    component_link = line['link']
                     break
             else:
                 component_type = ''
+                component_link = ''
 
             if component_type == 'part':
                 print(component_type)
+                out = show_drawing(component_link, work_dir=self.work_dir, user_pdf_program=self.user_pdf_program)
+                self.statusBar().showMessage(out)
             elif component_type == 'assembly':
                 print(component_type)
+                out = show_drawing(component_link, work_dir=self.work_dir, user_pdf_program=self.user_pdf_program)
+                self.statusBar().showMessage(out)
             elif component_type == 'gost':
                 print(component_type)
             elif component_type == 'outsource':
@@ -116,39 +122,6 @@ class Main_window(QMainWindow):
         except:
             self.statusBar().showMessage('Ошибка открытия компонента')
 
-    # Функция открытия чертежа
-    def show_drawing(self):
-        try:
-            item = self.treeWidget.currentItem()
-            number = item.text(0)
-            path = link_of_drawing(gl_cursor, number_drawing=number)
-
-            # Определение типа компонента
-            # count = item.childCount()
-            for line in self.data_components:
-                if line['number'] == number:
-                    component_type = line['attribute']
-                    print(component_type)
-                    break
-
-            if path[0] is not None:
-                # Открытие чертежа
-                if self.user_pdf_program:
-                    pass
-                    # Открытие прогой юзера
-                    # path_to_acrobat = self.patch_to_pdf  # Путь к проге заданной пользователем
-                    # process = subprocess.Popen([path_to_acrobat, '/A', 'page = ALL', link], shell=False, stdout=subprocess.PIPE)
-                    # process.wait()
-                else:
-                    # Открытие прогой по умолчанию
-                    full_path = self.work_dir + path[0]
-                    os.startfile(full_path)
-                # Открытие сборки
-                os.startfile('D:/PY/Drawings/draw_lib/Т5.1-10.00.094-A  Стенка.pdf')
-            else:
-                self.statusBar().showMessage('Не задана ссылка на чертёж')
-        except:
-            self.statusBar().showMessage('Ошибка открытия чертежа')
 
     # Функция редактирования чертежа
     def edit_drawing(self):

@@ -1,9 +1,9 @@
+import os
 import sqlite3
 import json
 import copy
 
 
-# Функция получения данных из базы
 def get_data_from_base(cursor):
     """
     Функция получения данных из базы
@@ -18,7 +18,7 @@ def get_data_from_base(cursor):
     out_components = []
     for line in data:
         out_components.append({'number': line[0], 'name': line[1],
-                               'level': line[2], 'attribute': line[4]})
+                               'level': line[2], 'link': line[3], 'attribute': line[4]})
 
     # Данные из БД по связям(вхождению)
     query_for_connections = 'SELECT * FROM connections'
@@ -39,7 +39,6 @@ def get_data_from_base(cursor):
     return out_components, out_connections
 
 
-# Обновление/создание модели
 def model(cursor_in_model, mode='generate'):
     """
     Функция создания модели БД
@@ -122,7 +121,6 @@ def model(cursor_in_model, mode='generate'):
     if mode == 'update':
         pass
 
-# Функция загрузки настроек
 def settings_load():
     """
     Функция загрузки настроек
@@ -146,7 +144,6 @@ def settings_load():
         out = []
         return out
 
-# Функция обновления настроек
 def update_settings(name_setting, new_state):
     """
     Функция обновления настроек
@@ -166,7 +163,6 @@ def update_settings(name_setting, new_state):
     except:
         return False
 
-# Функция записи в основную базу
 def write_to_base(base, cursor, data):
     """
     Функция записи в основную базу
@@ -184,7 +180,7 @@ def write_to_base(base, cursor, data):
         print(error)
         return False
 
-# Функция полученя ссылки чертежа из базы
+# Возможно не используется
 def link_of_drawing(cursor, number_drawing):
     """
     Функция полученя ссылки чертежа из базы
@@ -196,6 +192,36 @@ def link_of_drawing(cursor, number_drawing):
     cursor.execute(query, (number_drawing, ))
     data = cursor.fetchall()
     return data[0]
+
+
+def show_drawing(link, work_dir, user_pdf_program):
+    """
+    Функция открытия чертежа
+    :param link: Ссылка для открытия чертежа
+    :param work_dir: Рабочая папка
+    :param user_pdf_program: программа для pdf поумолчанию/пользовательская
+    :return: сообщение об ошибке, если пусто, то отработала штатно
+    """
+    try:
+        # Проверка на пустую ссылку
+        if link is False or link is None:
+            message = 'Ссылка не задана или не найдена'
+            return message
+
+        # Открытие чертежа
+        if user_pdf_program:
+            pass
+                # Открытие прогой юзера
+                # path_to_acrobat = self.patch_to_pdf  # Путь к проге заданной пользователем
+                # process = subprocess.Popen([path_to_acrobat, '/A', 'page = ALL', link], shell=False, stdout=subprocess.PIPE)
+                # process.wait()
+        else:
+            # Открытие прогой по умолчанию
+            full_path = work_dir + link
+            os.startfile(full_path)
+    except:
+        message = 'Ошибка открытия чертежа'
+        return message
 
 
 
