@@ -88,23 +88,50 @@ class Main_window(QMainWindow):
         except:
             self.statusBar().showMessage('Ошибка открытия базы')
 
+    # Функция открытия компонента
+    def open_component(self):
+        try:
+            item = self.treeWidget.currentItem()
+            number = item.text(0)
+            # Определение типа компонента
+            for line in self.data_components:
+                if line['number'] == number:
+                    component_type = line['attribute']
+                    break
+            else:
+                component_type = ''
+
+            if component_type == 'part':
+                print(component_type)
+            elif component_type == 'assembly':
+                print(component_type)
+            elif component_type == 'gost':
+                print(component_type)
+            elif component_type == 'outsource':
+                print(component_type)
+            elif component_type == '':
+                self.statusBar().showMessage(f'Компонент  {number} тип не определён')
+            else:
+                self.statusBar().showMessage(f'Компонент  {number} {component_type} не известный тип')
+        except:
+            self.statusBar().showMessage('Ошибка открытия компонента')
+
     # Функция открытия чертежа
     def show_drawing(self):
         try:
             item = self.treeWidget.currentItem()
             number = item.text(0)
             path = link_of_drawing(gl_cursor, number_drawing=number)
-            assembly_flag = False
-            # Определение сборка/чертёж
-            # Лучше реализовать через получение данных из базы в виде массива при загрузке
-            # И выполнять проверку через поиск в массиве
-            # def get_data_from_base
-            count = item.childCount()
-            #count = self.treeWidget.currentItem.childCount()
-            print(count)
-            if number[:-1] == 0 or number[:-1] == 5:
-                assembly_flag = True
-            if path[0] is not None and assembly_flag is False:
+
+            # Определение типа компонента
+            # count = item.childCount()
+            for line in self.data_components:
+                if line['number'] == number:
+                    component_type = line['attribute']
+                    print(component_type)
+                    break
+
+            if path[0] is not None:
                 # Открытие чертежа
                 if self.user_pdf_program:
                     pass
@@ -116,7 +143,6 @@ class Main_window(QMainWindow):
                     # Открытие прогой по умолчанию
                     full_path = self.work_dir + path[0]
                     os.startfile(full_path)
-            elif assembly_flag:
                 # Открытие сборки
                 os.startfile('D:/PY/Drawings/draw_lib/Т5.1-10.00.094-A  Стенка.pdf')
             else:
@@ -144,7 +170,7 @@ class Main_window(QMainWindow):
         if self.drawing_edit_flag:
             self.edit_drawing()
         else:
-            self.show_drawing()
+            self.open_component()
 
 
     # Функция отслеживания состояния чекбокса редактирования
@@ -222,7 +248,16 @@ class Main_window(QMainWindow):
         self.base = settings[1]['base']              # База
         self.drawing_edit_flag = False               # Флаг редактирования чертежа
 
-        connection_base(self.base)
+        connection_base(self.base)                   # Соединение с базой
+
+        # Получение данных из базы по компонентам и связям
+        try:
+            self.data_components, self.data_connections = get_data_from_base(gl_cursor)
+            print('Данные из базы получены')
+        except:
+            self.data_components = []
+            self.data_connections = []
+            print('Ошибка полученя данных из базы')
 
         self.work_dir_line.setText(self.work_dir)
         self.base_line.setText(self.base)
