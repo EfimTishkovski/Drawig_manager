@@ -122,6 +122,39 @@ class Main_window(QMainWindow):
         except:
             self.statusBar().showMessage('Ошибка открытия компонента')
 
+    # Функция открытия чертежа
+    def show_drawing(self):
+
+        try:
+            item = self.treeWidget.currentItem()
+            number = item.text(0)
+
+            # Поиск ссылки
+            for line in self.data_components:
+                if line['number'] == number:
+                    component_link = line['link']
+                    break
+            else:
+                component_link = ''
+
+            # Проверка на пустую ссылку
+            if component_link is False or component_link is None:
+                self.statusBar().showMessage('Ссылка не задана или не найдена')
+            else:
+                # Открытие чертежа
+                if self.user_pdf_program:
+                    pass
+                # Открытие прогой юзера
+                # path_to_acrobat = self.patch_to_pdf  # Путь к проге заданной пользователем
+                # process = subprocess.Popen([path_to_acrobat, '/A', 'page = ALL', link], shell=False, stdout=subprocess.PIPE)
+                # process.wait()
+                else:
+                    # Открытие прогой по умолчанию
+                    full_path = self.work_dir + component_link
+                    os.startfile(full_path)
+        except:
+            self.statusBar().showMessage('Ошибка открытия чертежа')
+
 
     # Функция редактирования чертежа
     def edit_drawing(self):
@@ -143,7 +176,7 @@ class Main_window(QMainWindow):
         if self.drawing_edit_flag:
             self.edit_drawing()
         else:
-            self.open_component()
+            self.show_drawing()
 
 
     # Функция отслеживания состояния чекбокса редактирования
