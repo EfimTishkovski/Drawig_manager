@@ -107,11 +107,14 @@ class Main_window(QMainWindow):
                 print(component_type)
                 self.edit_drawing()
             elif component_type == 'assembly':
+                self.edit_assembly(component_link, number)
                 print(component_type)
             elif component_type == 'gost':
                 print(component_type)
+                self.edit_drawing()     # А оно надо?
             elif component_type == 'outsource':
                 print(component_type)
+                self.edit_drawing()     # А оно надо?
             elif component_type == '':
                 self.statusBar().showMessage(f'Компонент  {number} тип не определён')
             else:
@@ -120,8 +123,16 @@ class Main_window(QMainWindow):
             self.statusBar().showMessage('Ошибка открытия компонента')
 
     # Функция редактирования сборки
-    def edit_assembly(self):
-        pass
+    def edit_assembly(self, link, number):
+        self.edit_drawing()
+        for line in self.data_connections:
+            if line['number'] == number:
+                items_component.extend(line['included'])
+                print(print(items_component))
+                break
+            else:
+                items_component = []
+
 
 
     # Функция открытия чертежа

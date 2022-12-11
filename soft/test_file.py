@@ -44,4 +44,7 @@ def generate_model(base, cursor, mass):
     return out_mass
 
 if __name__ == '__main__':
-    print(controller.update_settings(name_setting='work_dir', new_state='Абахумбар'))
+    base = sqlite3.connect('D:/PY/Drawings/Base data/Т5.1.db')
+    cursor = base.cursor()
+    data = controller.get_data_from_base(cursor)
+    print(data[1])
