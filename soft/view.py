@@ -89,7 +89,7 @@ class Main_window(QMainWindow):
             self.statusBar().showMessage('Ошибка открытия базы')
 
     # Функция открытия компонента
-    def open_component(self):
+    def edit_component(self):
         try:
             item = self.treeWidget.currentItem()
             number = item.text(0)
@@ -105,12 +105,9 @@ class Main_window(QMainWindow):
 
             if component_type == 'part':
                 print(component_type)
-                out = show_drawing(component_link, work_dir=self.work_dir, user_pdf_program=self.user_pdf_program)
-                self.statusBar().showMessage(out)
+                self.edit_drawing()
             elif component_type == 'assembly':
                 print(component_type)
-                out = show_drawing(component_link, work_dir=self.work_dir, user_pdf_program=self.user_pdf_program)
-                self.statusBar().showMessage(out)
             elif component_type == 'gost':
                 print(component_type)
             elif component_type == 'outsource':
@@ -122,9 +119,13 @@ class Main_window(QMainWindow):
         except:
             self.statusBar().showMessage('Ошибка открытия компонента')
 
+    # Функция редактирования сборки
+    def edit_assembly(self):
+        pass
+
+
     # Функция открытия чертежа
     def show_drawing(self):
-
         try:
             item = self.treeWidget.currentItem()
             number = item.text(0)
@@ -174,7 +175,7 @@ class Main_window(QMainWindow):
     # Функция обработки нажатия на строку дерева(открытие или редактирование)
     def click_line(self):
         if self.drawing_edit_flag:
-            self.edit_drawing()
+            self.edit_component()
         else:
             self.show_drawing()
 
@@ -183,9 +184,11 @@ class Main_window(QMainWindow):
     def draw_edit_state(self, state):
         if state == Qt.Checked:
             self.drawing_edit_window.setEnabled(True)
+            self.ass_edit_window.setEnabled(True)
             self.drawing_edit_flag = True
         else:
             self.drawing_edit_window.setEnabled(False)
+            self.ass_edit_window.setEnabled(False)
             self.drawing_edit_flag = False
 
 
@@ -246,7 +249,8 @@ class Main_window(QMainWindow):
         settings = settings_load()                  # Загрузка сохранённых настроек
 
         # Настройки при запуске
-        self.drawing_edit_window.setEnabled(False)  # Окно редактирования не активно
+        self.drawing_edit_window.setEnabled(False)  # Окно редактирования чертежа не активно
+        self.ass_edit_window.setEnabled(False)      # Окно редактирования сборки не активно
 
         # Переменные
         self.user_pdf_program = False                # Флаг выбора пользовательской проги для pdf

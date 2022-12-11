@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1207</width>
-    <height>675</height>
+    <width>1800</width>
+    <height>771</height>
    </rect>
   </property>
   <property name="font">
@@ -434,13 +434,129 @@ border-color: rgb(255, 85, 127);</string>
      <string>Запомнить</string>
     </property>
    </widget>
+   <widget class="QWidget" name="ass_edit_window" native="true">
+    <property name="geometry">
+     <rect>
+      <x>1260</x>
+      <y>40</y>
+      <width>510</width>
+      <height>630</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(0, 170, 255);</string>
+    </property>
+    <widget class="QLabel" name="label_7">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>20</y>
+       <width>230</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>16</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Редактировние сборки</string>
+     </property>
+    </widget>
+    <widget class="QTableWidget" name="sp_table">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>60</y>
+       <width>450</width>
+       <height>480</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
+     <column>
+      <property name="text">
+       <string>Номер</string>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Название</string>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Количество</string>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+     </column>
+    </widget>
+    <widget class="QPushButton" name="save_change_Button_sp">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>570</y>
+       <width>220</width>
+       <height>40</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(130, 166, 200);</string>
+     </property>
+     <property name="text">
+      <string>Сохранить изменения</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="sp_cancel_button">
+     <property name="geometry">
+      <rect>
+       <x>370</x>
+       <y>570</y>
+       <width>110</width>
+       <height>40</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 111, 8);</string>
+     </property>
+     <property name="text">
+      <string>Отмена</string>
+     </property>
+    </widget>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1207</width>
+     <width>1800</width>
      <height>21</height>
     </rect>
    </property>
