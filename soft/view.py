@@ -127,11 +127,21 @@ class Main_window(QMainWindow):
         self.edit_drawing()
         for line in self.data_connections:
             if line['number'] == number:
-                items_component.extend(line['included'])
-                print(print(items_component))
+                temp_item = line['included']
+                items_component.extend(temp_item)
+                print(items_component)
                 break
             else:
                 items_component = []
+        # Заполнение данными таблицы
+        if items_component:
+            self.sp_table.setRowCount(len(items_component))  # Установка количества строк
+            # Передача данных в таблицу
+            for row in range(len(items_component)):
+                for column in range(len(items_component[row])):
+                    self.sp_table.setItem(row, column, QtWidgets.QTableWidgetItem(str(items_component[row][column])))
+            self.sp_table.resizeColumnsToContents()         # Подгонка размеров колонок по содержимому
+
 
 
 

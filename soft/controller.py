@@ -33,7 +33,14 @@ def get_data_from_base(cursor):
     for line in included_set:
         for component in data_connections:
             if line == component[1]:
-                temp.append((component[0], component[2]))
+                # Добавление имени
+                for element in out_components:
+                    if element['number'] == component[0]:
+                        name = element['name']
+                        break
+                else:
+                    name = ''
+                temp.append((component[0], name, component[2]))
         out_connections.append({'number': line, 'included': temp.copy()})
         temp.clear()
     return out_components, out_connections

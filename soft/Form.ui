@@ -437,9 +437,9 @@ border-color: rgb(255, 85, 127);</string>
    <widget class="QWidget" name="ass_edit_window" native="true">
     <property name="geometry">
      <rect>
-      <x>1260</x>
+      <x>1209</x>
       <y>40</y>
-      <width>510</width>
+      <width>561</width>
       <height>630</height>
      </rect>
     </property>
@@ -469,9 +469,14 @@ border-color: rgb(255, 85, 127);</string>
       <rect>
        <x>30</x>
        <y>60</y>
-       <width>450</width>
+       <width>501</width>
        <height>480</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(255, 255, 255);</string>
@@ -531,7 +536,7 @@ border-color: rgb(255, 85, 127);</string>
     <widget class="QPushButton" name="sp_cancel_button">
      <property name="geometry">
       <rect>
-       <x>370</x>
+       <x>420</x>
        <y>570</y>
        <width>110</width>
        <height>40</height>
