@@ -11,8 +11,11 @@ from PyQt5.QtCore import Qt
 
 from controller import *
 
-gl_base = ''    # Глобальная переменная для имени активной базы
-gl_cursor = ''  # Глобальный курсор
+gl_base = ''     # Глобальная переменная для имени активной базы
+gl_cursor = ''   # Глобальный курсор
+buf_number = ''  # Переменная-буфер для номера
+buf_name = ''    # Переменная-буфер для имени
+buf_link = ''    # Переменная-буфер для ссылки
 
 
 # Функция подключения к базе
@@ -98,16 +101,18 @@ class Main_window(QMainWindow):
                 if line['number'] == number:
                     component_type = line['attribute']
                     component_link = line['link']
+                    component_name = line['name']
                     break
             else:
                 component_type = ''
                 component_link = ''
+                component_name = ''
 
             if component_type == 'part':
                 print(component_type)
-                self.edit_drawing()
+                self.edit_drawing(number=number, name=component_name, link=component_link)
             elif component_type == 'assembly':
-                self.edit_assembly(component_link, number)
+                self.edit_assembly(number=number, name=component_name, link=component_link)
                 print(component_type)
             elif component_type == 'gost':
                 print(component_type)
@@ -123,13 +128,14 @@ class Main_window(QMainWindow):
             self.statusBar().showMessage('Ошибка открытия компонента')
 
     # Функция редактирования сборки
-    def edit_assembly(self, link, number):
-        self.edit_drawing()
+    def edit_assembly(self, number, name, link):
+        self.edit_drawing(number=number, name=name, link=link)
+        items_component = []
         for line in self.data_connections:
             if line['number'] == number:
                 temp_item = line['included']
                 items_component.extend(temp_item)
-                print(items_component)
+                #print(items_component)
                 break
             else:
                 items_component = []
@@ -141,8 +147,8 @@ class Main_window(QMainWindow):
                 for column in range(len(items_component[row])):
                     self.sp_table.setItem(row, column, QtWidgets.QTableWidgetItem(str(items_component[row][column])))
             self.sp_table.resizeColumnsToContents()         # Подгонка размеров колонок по содержимому
-
-
+        else:
+            self.sp_table.clear()
 
 
     # Функция открытия чертежа
@@ -179,16 +185,17 @@ class Main_window(QMainWindow):
 
 
     # Функция редактирования чертежа
-    def edit_drawing(self):
+    def edit_drawing(self, number, name, link):
         try:
-            item = self.treeWidget.currentItem()
-            number = item.text(0)
-            query = 'SELECT name, link FROM components WHERE number = ?'
-            gl_cursor.execute(query, (number,))
-            data = gl_cursor.fetchall()[0]
+            # Отображение данных по чертежу
             self.number_line.setText(number)
-            self.name_line.setText(data[0])
-            self.link_line.setText(data[1])
+            self.name_line.setText(name)
+            self.link_line.setText(link)
+            # Сохранение данных в буферные переменные
+            global buf_number, buf_name, buf_link
+            buf_number = number
+            buf_name = name
+            buf_link - link
         except:
             self.statusBar().showMessage('Ошибка редактирования чертежа')
 
@@ -253,10 +260,16 @@ class Main_window(QMainWindow):
         self.link_line.setText(new_link)
 
 
-    # Функция сохранения новой ссылки
-    def new_link_save(self):
+    # Функция сохранения изменений
+    def save_draw_change(self):
+        # Считывание прежних данных
+        global buf_number, buf_name, buf_link
+        old_number = buf_number
+        old_name = buf_name
+        old_link = buf_link
         link = self.link_line.toPlainText()
         number = self.number_line.text()
+        # Дописать проверку на неизменность вводимых данных
         answer_base = write_to_base(gl_base, gl_cursor, (link, number))
         if answer_base:
             self.statusBar().showMessage('Изменения сохранены')
@@ -302,7 +315,7 @@ class Main_window(QMainWindow):
         self.work_dir_checkBox.stateChanged.connect(self.work_dir_state)  # Обработчик состояния чекбокса рабочей папки
         self.base_checkBox.stateChanged.connect(self.work_base_state)     # Обработчик состояния чекбокса базы
         self.new_link_Button.clicked.connect(self.new_link)               # Указание новой ссылки на чертёж
-        self.save_change_Button.clicked.connect(self.new_link_save)       # Сохранение новой ссылки
+        self.save_change_Button.clicked.connect(self.save_draw_change)       # Сохранение новой ссылки
 
 
 # Запуск

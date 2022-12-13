@@ -231,6 +231,5 @@ def show_drawing(link, work_dir, user_pdf_program):
         return message
 
 
-
 if __name__ == "__main__":
     print(settings_load())
