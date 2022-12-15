@@ -280,6 +280,7 @@ class Main_window(QMainWindow):
         if old_link != link:
             new_data.append(link)
 
+        # Продолжить работу по отслеживанию изменений над write_to_base
         if new_data:
             answer_base = write_to_base(gl_base, gl_cursor, (link, number))
             if answer_base:
