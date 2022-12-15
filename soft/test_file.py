@@ -44,7 +44,11 @@ def generate_model(base, cursor, mass):
     return out_mass
 
 if __name__ == '__main__':
+
     base = sqlite3.connect('D:/PY/Drawings/Base data/Т5.1.db')
     cursor = base.cursor()
-    data = controller.get_data_from_base(cursor)
-    print(data[1])
+    old_data = [{'number': 'У-10.00.000-Ф'}, {'name': 'странная деталь'}, {'link': 'Папка 1/4'}]
+    new_data = [{'number': 'У-10.00.000-Ф'}, {'name': 'не менее странная деталь'}, {'link': 'Папка 3/4'}]
+    controller.write_to_base(base, cursor, old_data, new_data)
+
+

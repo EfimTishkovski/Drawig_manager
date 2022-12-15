@@ -269,12 +269,23 @@ class Main_window(QMainWindow):
         old_link = buf_link
         link = self.link_line.toPlainText()
         number = self.number_line.text()
+        name = self.name_line.toPlainText()
         # Дописать проверку на неизменность вводимых данных
-        answer_base = write_to_base(gl_base, gl_cursor, (link, number))
-        if answer_base:
-            self.statusBar().showMessage('Изменения сохранены')
-        else:
-            self.statusBar().showMessage('Ошибка сохранения изменений')
+        # Дописать проверку на непустой ввод (наверное кроме ссылки)
+        new_data = []
+        if old_number != number:
+            new_data.append(number)
+        if old_name != name:
+            new_data.append(name)
+        if old_link != link:
+            new_data.append(link)
+
+        if new_data:
+            answer_base = write_to_base(gl_base, gl_cursor, (link, number))
+            if answer_base:
+                self.statusBar().showMessage('Изменения сохранены')
+            else:
+                self.statusBar().showMessage('Ошибка сохранения изменений')
 
 
     def __init__(self):

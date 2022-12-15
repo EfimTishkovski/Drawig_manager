@@ -170,18 +170,30 @@ def update_settings(name_setting, new_state):
     except:
         return False
 
-def write_to_base(base, cursor, data):
+def write_to_base(base, cursor, new_data, old_data):
     """
     Функция записи в основную базу
+    Структура массивов new_data и old_data:
+    ({number: 'Д-00.00.000-Ы'}, {name: 'странная деталь'}, {link: 'странное место'})
     :param base: Объект базы
     :param cursor: Объект курсора
     :param data: данные для записи
     :return: успешно / неуспешно
     """
     try:
-        query = 'UPDATE components SET link = ? WHERE number = ?'
-        cursor.execute(query, (data[0], data[1]))
-        base.commit()
+        for item in zip(old_data, new_data):
+            a = list(item[0].values())[0]
+            b = list(item[1].values())[0]
+            if a == b:
+                print('ok')
+            else:
+                print('изменилось', list(item[0].keys()))
+
+
+
+        #query = 'UPDATE components SET name  = ?, link = ? WHERE number = ?'
+        #cursor.execute(query, (data[0], data[1]))
+        #base.commit()
         return True
     except sqlite3.Error as error:
         print(error)
