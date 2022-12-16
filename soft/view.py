@@ -195,7 +195,7 @@ class Main_window(QMainWindow):
             global buf_number, buf_name, buf_link
             buf_number = number
             buf_name = name
-            buf_link - link
+            buf_link = link
         except:
             self.statusBar().showMessage('Ошибка редактирования чертежа')
 
@@ -289,6 +289,14 @@ class Main_window(QMainWindow):
                 self.statusBar().showMessage('Ошибка сохранения изменений')
 
 
+    """
+    Дневник разработчика =)
+    Убрать окно редактирования чертежа
+    Редактирование чертежей (номер, имя, ссылка) сделать в таблице сборки
+    Добавить в эту таблицу ссылки на чертежи деталей
+    Отслеживать изменения тадлицы сборки, находить разницу и вносить изменения в БД
+    """
+
     def __init__(self):
         super(Main_window, self).__init__()
         loadUi('Form.ui', self)
@@ -327,7 +335,7 @@ class Main_window(QMainWindow):
         self.work_dir_checkBox.stateChanged.connect(self.work_dir_state)  # Обработчик состояния чекбокса рабочей папки
         self.base_checkBox.stateChanged.connect(self.work_base_state)     # Обработчик состояния чекбокса базы
         self.new_link_Button.clicked.connect(self.new_link)               # Указание новой ссылки на чертёж
-        self.save_change_Button.clicked.connect(self.save_draw_change)       # Сохранение новой ссылки
+        self.save_change_Button.clicked.connect(self.save_draw_change)    # Сохранение изменений компонента(чертежа)
 
 
 # Запуск

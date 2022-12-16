@@ -181,19 +181,28 @@ def write_to_base(base, cursor, new_data, old_data):
     :return: успешно / неуспешно
     """
     try:
+        change_attribute = []
         for item in zip(old_data, new_data):
             a = list(item[0].values())[0]
             b = list(item[1].values())[0]
-            if a == b:
-                print('ok')
-            else:
-                print('изменилось', list(item[0].keys()))
+            if a != b:
+                change_attribute.append(list(item[0].keys())[0])
 
+        print(change_attribute)
 
+        # Внесение изменений в базу
+        for attribute in change_attribute:
+            if attribute == 'number':
+                pass
+            elif attribute == 'name':
+                query = 'UPDATE components SET name = ?, link = ? WHERE number = ?'
+                cursor.execute(query, (new_data['name'], new_data['number']))
+                base.commit()
+            elif attribute == 'link':
+                query = 'UPDATE components SET link = ?, link = ? WHERE number = ?'
+                cursor.execute(query, (new_data['name'], new_data['number']))
+                base.commit()
 
-        #query = 'UPDATE components SET name  = ?, link = ? WHERE number = ?'
-        #cursor.execute(query, (data[0], data[1]))
-        #base.commit()
         return True
     except sqlite3.Error as error:
         print(error)
