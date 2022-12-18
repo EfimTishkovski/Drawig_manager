@@ -133,12 +133,12 @@ class Main_window(QMainWindow):
         items_component = []
         for line in self.data_connections:
             if line['number'] == number:
-                temp_item = line['included']
-                items_component.extend(temp_item)
-                #print(items_component)
+                items_component.extend(line['included'])
                 break
-            else:
-                items_component = []
+        else:
+            items_component = []
+
+        print(items_component)
         # Заполнение данными таблицы
         if items_component:
             self.sp_table.setRowCount(len(items_component))  # Установка количества строк
@@ -293,7 +293,7 @@ class Main_window(QMainWindow):
     Дневник разработчика =)
     Убрать окно редактирования чертежа
     Редактирование чертежей (номер, имя, ссылка) сделать в таблице сборки
-    Добавить в эту таблицу ссылки на чертежи деталей
+    Добавить в эту таблицу ссылки на чертежи деталей  (сделано)
     Отслеживать изменения тадлицы сборки, находить разницу и вносить изменения в БД
     """
 
