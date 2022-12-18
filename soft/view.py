@@ -113,7 +113,7 @@ class Main_window(QMainWindow):
                 # Допистать вызов содержащей спецификации (куда входит)
                 self.edit_drawing(number=number, name=component_name, link=component_link)
             elif component_type == 'assembly':
-                self.edit_assembly(number=number, name=component_name, link=component_link)
+                self.edit_assembly(number=number)
                 print(component_type)
             elif component_type == 'gost':
                 print(component_type)
@@ -129,8 +129,7 @@ class Main_window(QMainWindow):
             self.statusBar().showMessage('Ошибка открытия компонента')
 
     # Функция редактирования сборки
-    def edit_assembly(self, number, name, link):
-        self.edit_drawing(number=number, name=name, link=link)
+    def edit_assembly(self, number):
         items_component = []
         for line in self.data_connections:
             if line['number'] == number:
@@ -193,10 +192,19 @@ class Main_window(QMainWindow):
             self.name_line.setText(name)
             self.link_line.setText(link)
             # Сохранение данных в буферные переменные
-            global buf_number, buf_name, buf_link
-            buf_number = number
-            buf_name = name
-            buf_link = link
+            global buf_number, buf_name, buf_link  # ?
+            buf_number = number                    # ?
+            buf_name = name                        # ?
+            buf_link = link                        # ?
+
+            # Новая часть
+            incl = ''
+            for line in self.data_connections:
+                for cell in  line['included']:
+                    if cell[0] == number:
+                        incl = line['number']
+                        break
+            self.edit_assembly(number=incl)
         except:
             self.statusBar().showMessage('Ошибка редактирования чертежа')
 
@@ -295,8 +303,10 @@ class Main_window(QMainWindow):
     Убрать окно редактирования чертежа
     Редактирование чертежей (номер, имя, ссылка) сделать в таблице сборки
     
-    Добавить в эту таблицу ссылки на чертежи деталей  (сделано)
-    Сделать вызов спецификации, содержащей чертёж, при нажатии на чертёж в дереве
+    Подумать над первичным входжением ?
+    Сделать вызов спецификации, содержащей чертёж, при нажатии на чертёж в дереве (готово)
+    Подчистить и упорядочить код
+    Дальнейшая работа на внесением изменений в компонент детали
     
     Отслеживать изменения тадлицы сборки, находить разницу и вносить изменения в БД
     """

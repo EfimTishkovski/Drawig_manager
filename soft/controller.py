@@ -41,6 +41,7 @@ def get_data_from_base(cursor):
                         break
                 else:
                     name = ''
+                    link = ''
                 temp.append((component[0], name, component[2], link))
         out_connections.append({'number': line, 'included': temp.copy()})
         temp.clear()
