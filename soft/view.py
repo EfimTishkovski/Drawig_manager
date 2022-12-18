@@ -110,6 +110,7 @@ class Main_window(QMainWindow):
 
             if component_type == 'part':
                 print(component_type)
+                # Допистать вызов содержащей спецификации (куда входит)
                 self.edit_drawing(number=number, name=component_name, link=component_link)
             elif component_type == 'assembly':
                 self.edit_assembly(number=number, name=component_name, link=component_link)
@@ -293,7 +294,10 @@ class Main_window(QMainWindow):
     Дневник разработчика =)
     Убрать окно редактирования чертежа
     Редактирование чертежей (номер, имя, ссылка) сделать в таблице сборки
+    
     Добавить в эту таблицу ссылки на чертежи деталей  (сделано)
+    Сделать вызов спецификации, содержащей чертёж, при нажатии на чертёж в дереве
+    
     Отслеживать изменения тадлицы сборки, находить разницу и вносить изменения в БД
     """
 
