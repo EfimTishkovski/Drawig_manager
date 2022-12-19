@@ -11,11 +11,8 @@ from PyQt5.QtCore import Qt
 
 from controller import *
 
-gl_base = ''     # Глобальная переменная для имени активной базы
-gl_cursor = ''   # Глобальный курсор
-buf_number = ''  # Переменная-буфер для номера
-buf_name = ''    # Переменная-буфер для имени
-buf_link = ''    # Переменная-буфер для ссылки
+gl_base = ''  # Глобальная переменная для имени активной базы
+gl_cursor = ''  # Глобальный курсор
 
 
 # Функция подключения к базе
@@ -111,16 +108,16 @@ class Main_window(QMainWindow):
             if component_type == 'part':
                 print(component_type)
                 # Допистать вызов содержащей спецификации (куда входит)
-                self.edit_drawing(number=number, name=component_name, link=component_link)
+                self.edit_drawing(number=number)
             elif component_type == 'assembly':
                 self.edit_assembly(number=number)
                 print(component_type)
             elif component_type == 'gost':
                 print(component_type)
-                self.edit_drawing()     # А оно надо?
+                self.edit_drawing()  # А оно надо?
             elif component_type == 'outsource':
                 print(component_type)
-                self.edit_drawing()     # А оно надо?
+                self.edit_drawing()  # А оно надо?
             elif component_type == '':
                 self.statusBar().showMessage(f'Компонент  {number} тип не определён')
             else:
@@ -146,10 +143,9 @@ class Main_window(QMainWindow):
             for row in range(len(items_component)):
                 for column in range(len(items_component[row])):
                     self.sp_table.setItem(row, column, QtWidgets.QTableWidgetItem(str(items_component[row][column])))
-            self.sp_table.resizeColumnsToContents()         # Подгонка размеров колонок по содержимому
+            self.sp_table.resizeColumnsToContents()  # Подгонка размеров колонок по содержимому
         else:
             self.sp_table.clear()
-
 
     # Функция открытия чертежа
     def show_drawing(self):
@@ -183,31 +179,18 @@ class Main_window(QMainWindow):
         except:
             self.statusBar().showMessage('Ошибка открытия чертежа')
 
-
-    # Функция редактирования чертежа
-    def edit_drawing(self, number, name, link):
+    # Функция редактирования чертежа (и состава сборки)
+    def edit_drawing(self, number):
         try:
-            # Отображение данных по чертежу
-            self.number_line.setText(number)
-            self.name_line.setText(name)
-            self.link_line.setText(link)
-            # Сохранение данных в буферные переменные
-            global buf_number, buf_name, buf_link  # ?
-            buf_number = number                    # ?
-            buf_name = name                        # ?
-            buf_link = link                        # ?
-
-            # Новая часть
             incl = ''
             for line in self.data_connections:
-                for cell in  line['included']:
+                for cell in line['included']:
                     if cell[0] == number:
                         incl = line['number']
                         break
             self.edit_assembly(number=incl)
         except:
             self.statusBar().showMessage('Ошибка редактирования чертежа')
-
 
     # Функция обработки нажатия на строку дерева(открытие или редактирование)
     def click_line(self):
@@ -216,18 +199,14 @@ class Main_window(QMainWindow):
         else:
             self.show_drawing()
 
-
     # Функция отслеживания состояния чекбокса редактирования
     def draw_edit_state(self, state):
         if state == Qt.Checked:
-            self.drawing_edit_window.setEnabled(True)
             self.ass_edit_window.setEnabled(True)
             self.drawing_edit_flag = True
         else:
-            self.drawing_edit_window.setEnabled(False)
             self.ass_edit_window.setEnabled(False)
             self.drawing_edit_flag = False
-
 
     # Функция отслеживания состояния чекбокса папки с чертежами
     def work_dir_state(self, state):
@@ -239,7 +218,6 @@ class Main_window(QMainWindow):
             else:
                 self.statusBar().showMessage('Ошибка сохранения рабочей папки')
 
-
     # Функция отслеживания состояния чекбокса базы
     def work_base_state(self, state):
         if state == Qt.Checked:
@@ -250,7 +228,6 @@ class Main_window(QMainWindow):
             else:
                 self.statusBar().showMessage('Ошибка назаначения базы по умолчанию')
 
-
     # Функция указания пути к рабочей папке
     def select_work_dir(self):
         try:
@@ -260,7 +237,6 @@ class Main_window(QMainWindow):
         except:
             self.statusBar().showMessage('Ошибка указания рабочей папки')
 
-
     # Функция указания ссылки на чертёж
     def new_link(self):
         direktory = self.work_dir_line.toPlainText()
@@ -268,35 +244,9 @@ class Main_window(QMainWindow):
         new_link = new_link.split('/')[-1]
         self.link_line.setText(new_link)
 
-
     # Функция сохранения изменений
     def save_draw_change(self):
-        # Считывание прежних данных
-        global buf_number, buf_name, buf_link
-        old_number = buf_number
-        old_name = buf_name
-        old_link = buf_link
-        link = self.link_line.toPlainText()
-        number = self.number_line.text()
-        name = self.name_line.toPlainText()
-        # Дописать проверку на неизменность вводимых данных
-        # Дописать проверку на непустой ввод (наверное кроме ссылки)
-        new_data = []
-        if old_number != number:
-            new_data.append(number)
-        if old_name != name:
-            new_data.append(name)
-        if old_link != link:
-            new_data.append(link)
-
-        # Продолжить работу по отслеживанию изменений над write_to_base
-        if new_data:
-            answer_base = write_to_base(gl_base, gl_cursor, (link, number))
-            if answer_base:
-                self.statusBar().showMessage('Изменения сохранены')
-            else:
-                self.statusBar().showMessage('Ошибка сохранения изменений')
-
+        pass
 
     """
     Дневник разработчика =)
@@ -304,29 +254,28 @@ class Main_window(QMainWindow):
     Редактирование чертежей (номер, имя, ссылка) сделать в таблице сборки
     
     Подумать над первичным входжением ?
-    Сделать вызов спецификации, содержащей чертёж, при нажатии на чертёж в дереве (готово)
-    Подчистить и упорядочить код
-    Дальнейшая работа на внесением изменений в компонент детали
     
-    Отслеживать изменения тадлицы сборки, находить разницу и вносить изменения в БД
+    Дальнейшая работа над добавлением/удалением детали. Сохранение изменений в базе
+    
+    Отслеживать изменения таблицы сборки, находить разницу и вносить изменения в БД
     """
 
     def __init__(self):
         super(Main_window, self).__init__()
         loadUi('Form.ui', self)
-        settings = settings_load()                  # Загрузка сохранённых настроек
+        settings = settings_load()  # Загрузка сохранённых настроек
 
         # Настройки при запуске
-        self.drawing_edit_window.setEnabled(False)  # Окно редактирования чертежа не активно
-        self.ass_edit_window.setEnabled(False)      # Окно редактирования сборки не активно
+        # self.drawing_edit_window.setEnabled(False)  # Окно редактирования чертежа не активно
+        self.ass_edit_window.setEnabled(False)  # Окно редактирования сборки не активно
 
         # Переменные
-        self.user_pdf_program = False                # Флаг выбора пользовательской проги для pdf
-        self.work_dir = settings[0]['work_dir']      # Рабочая папка #'D:/G5/PY/Drawig_manager/draw_lib/'
-        self.base = settings[1]['base']              # База
-        self.drawing_edit_flag = False               # Флаг редактирования чертежа
+        self.user_pdf_program = False  # Флаг выбора пользовательской проги для pdf
+        self.work_dir = settings[0]['work_dir']  # Рабочая папка #'D:/G5/PY/Drawig_manager/draw_lib/'
+        self.base = settings[1]['base']  # База
+        self.drawing_edit_flag = False  # Флаг редактирования чертежа
 
-        connection_base(self.base)                   # Соединение с базой
+        connection_base(self.base)  # Соединение с базой
 
         # Получение данных из базы по компонентам и связям
         try:
@@ -341,15 +290,15 @@ class Main_window(QMainWindow):
         self.base_line.setText(self.base)
 
         self.launch.clicked.connect(self.show_tree_new)
-        self.selectionButton.clicked.connect(self.select_base)                # Указание базы
+        self.selectionButton.clicked.connect(self.select_base)  # Указание базы
         self.selection_work_dir_Button.clicked.connect(self.select_work_dir)  # Указание рабочей папки
-        self.treeWidget.itemClicked.connect(self.click_line)              # Обработчик нажатия на строку
-        #self.treeWidget.itemDoubleClicked.connect(self.dublle_click_item)
-        self.checkBox_edit.stateChanged.connect(self.draw_edit_state)     # Обработчик состояния чекбокса редактирования
+        self.treeWidget.itemClicked.connect(self.click_line)  # Обработчик нажатия на строку
+        # self.treeWidget.itemDoubleClicked.connect(self.dublle_click_item)
+        self.checkBox_edit.stateChanged.connect(self.draw_edit_state)  # Обработчик состояния чекбокса редактирования
         self.work_dir_checkBox.stateChanged.connect(self.work_dir_state)  # Обработчик состояния чекбокса рабочей папки
-        self.base_checkBox.stateChanged.connect(self.work_base_state)     # Обработчик состояния чекбокса базы
-        self.new_link_Button.clicked.connect(self.new_link)               # Указание новой ссылки на чертёж
-        self.save_change_Button.clicked.connect(self.save_draw_change)    # Сохранение изменений компонента(чертежа)
+        self.base_checkBox.stateChanged.connect(self.work_base_state)  # Обработчик состояния чекбокса базы
+        # self.new_link_Button.clicked.connect(self.new_link)               # Указание новой ссылки на чертёж
+        # self.save_change_Button.clicked.connect(self.save_draw_change)    # Сохранение изменений компонента(чертежа)
 
 
 # Запуск
@@ -358,4 +307,3 @@ if __name__ == '__main__':
     window = Main_window()
     window.show()
     sys.exit(app.exec_())
-
