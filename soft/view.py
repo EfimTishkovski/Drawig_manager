@@ -242,20 +242,39 @@ class Main_window(QMainWindow):
         direktory = self.work_dir_line.toPlainText()
         new_link = QFileDialog.getOpenFileName(self, 'Открыть файл', direktory, '*.pdf')[0]
         new_link = new_link.split('/')[-1]
-        self.link_line.setText(new_link)
+        #self.link_line.setText(new_link)
+        return new_link
 
     # Функция сохранения изменений
     def save_draw_change(self):
         pass
 
+    # Функция добавленя элемента
+    def add_element(self):
+        row_count = self.sp_table.rowCount()        # Установка количества строк
+        self.sp_table.insertRow(row_count)
+        column_count = self.sp_table.columnCount()  # Установка количества столбцов
+        for num in range(column_count):
+            self.sp_table.setItem(row_count, num, QtWidgets.QTableWidgetItem(str('')))   # Мнимое заполнение, для удобства
+
+    # Функция задания ссылки для нового элемента
+    def link_new_element(self, item):
+        try:
+            if item.column() == 3:
+                link = self.new_link()
+            print(link)
+        except:
+            self.statusBar().showMessage('Ошибка назначения ссылки')
+
+
     """
     Дневник разработчика =)
     Убрать окно редактирования чертежа
-    Редактирование чертежей (номер, имя, ссылка) сделать в таблице сборки
+    Редактирование чертежей (номер, имя, ссылка) сделать в таблице сборки 
     
     Подумать над первичным входжением ?
     
-    Дальнейшая работа над добавлением/удалением детали. Сохранение изменений в базе
+    Дальнейшая работа над добавлением/удалением детали. Сохранение изменений в базе (в работе)
     
     Отслеживать изменения таблицы сборки, находить разницу и вносить изменения в БД
     """
@@ -299,6 +318,8 @@ class Main_window(QMainWindow):
         self.base_checkBox.stateChanged.connect(self.work_base_state)  # Обработчик состояния чекбокса базы
         # self.new_link_Button.clicked.connect(self.new_link)               # Указание новой ссылки на чертёж
         # self.save_change_Button.clicked.connect(self.save_draw_change)    # Сохранение изменений компонента(чертежа)
+        self.add_button.clicked.connect(self.add_element)                   # Добавить элемент в сборку
+        self.sp_table.itemClicked.connect(self.link_new_element)            # Указание ссылки для элемента
 
 
 # Запуск
