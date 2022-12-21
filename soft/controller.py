@@ -38,11 +38,13 @@ def get_data_from_base(cursor):
                     if element['number'] == component[0]:
                         name = element['name']
                         link = element['link']
+                        attribute = element['attribute']
                         break
                 else:
                     name = ''
                     link = ''
-                temp.append((component[0], name, component[2], link))
+                    attribute = ''
+                temp.append((component[0], name, component[2], link, attribute))
         out_connections.append({'number': line, 'included': temp.copy()})
         temp.clear()
     return out_components, out_connections

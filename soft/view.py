@@ -237,7 +237,7 @@ class Main_window(QMainWindow):
         except:
             self.statusBar().showMessage('Ошибка указания рабочей папки')
 
-    # Функция указания ссылки на чертёж
+    # Функция указания ссылки на чертёж (временно не используется)
     def new_link(self):
         direktory = self.work_dir_line.toPlainText()
         new_link = QFileDialog.getOpenFileName(self, 'Открыть файл', direktory, '*.pdf')[0]
@@ -261,10 +261,18 @@ class Main_window(QMainWindow):
     def link_new_element(self, item):
         try:
             if item.column() == 3:
-                link = self.new_link()
-            print(link)
+                row = item.row()
+                direktory = self.work_dir_line.toPlainText()
+                new_link = QFileDialog.getOpenFileName(self, 'Открыть файл', direktory, '*.pdf')[0]
+                new_link = new_link.split('/')[-1]
+                print(new_link)
+                self.sp_table.setItem(row, item.column(), QtWidgets.QTableWidgetItem(new_link))
         except:
             self.statusBar().showMessage('Ошибка назначения ссылки')
+
+    # Функция сохранения изменений
+    def save_new_element(self):
+        pass
 
 
     """
@@ -320,6 +328,7 @@ class Main_window(QMainWindow):
         # self.save_change_Button.clicked.connect(self.save_draw_change)    # Сохранение изменений компонента(чертежа)
         self.add_button.clicked.connect(self.add_element)                   # Добавить элемент в сборку
         self.sp_table.itemClicked.connect(self.link_new_element)            # Указание ссылки для элемента
+        self.save_change_Button_sp.ckicked.connect(self.save_new_element)   # Нажатие на кнопку сохранить изменения
 
 
 # Запуск

@@ -336,6 +336,16 @@ border-color: rgb(255, 85, 127);</string>
        </font>
       </property>
      </column>
+     <column>
+      <property name="text">
+       <string>Тип</string>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
+     </column>
     </widget>
     <widget class="QPushButton" name="save_change_Button_sp">
      <property name="geometry">
