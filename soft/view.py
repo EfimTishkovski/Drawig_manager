@@ -135,7 +135,6 @@ class Main_window(QMainWindow):
         else:
             items_component = []
 
-        print(items_component)
         # Заполнение данными таблицы
         if items_component:
             self.sp_table.setRowCount(len(items_component))  # Установка количества строк
@@ -242,12 +241,7 @@ class Main_window(QMainWindow):
         direktory = self.work_dir_line.toPlainText()
         new_link = QFileDialog.getOpenFileName(self, 'Открыть файл', direktory, '*.pdf')[0]
         new_link = new_link.split('/')[-1]
-        #self.link_line.setText(new_link)
         return new_link
-
-    # Функция сохранения изменений
-    def save_draw_change(self):
-        pass
 
     # Функция добавленя элемента
     def add_element(self):
@@ -265,14 +259,27 @@ class Main_window(QMainWindow):
                 direktory = self.work_dir_line.toPlainText()
                 new_link = QFileDialog.getOpenFileName(self, 'Открыть файл', direktory, '*.pdf')[0]
                 new_link = new_link.split('/')[-1]
-                print(new_link)
                 self.sp_table.setItem(row, item.column(), QtWidgets.QTableWidgetItem(new_link))
         except:
             self.statusBar().showMessage('Ошибка назначения ссылки')
 
     # Функция сохранения изменений
     def save_new_element(self):
-        pass
+        print('данные', self.get_data_from_table())
+
+    # Функция получения данных из таблицы
+    def get_data_from_table(self):
+        out = []
+        row = self.sp_table.rowCount()
+        column = self.sp_table.columnCount()
+        for line in range(row):
+            temp = []
+            for cell in range(column):
+                cell_data = self.sp_table.item(line, cell)
+                temp.append(cell_data.text())
+            out.append(temp)
+
+        return out
 
 
     """
@@ -328,7 +335,7 @@ class Main_window(QMainWindow):
         # self.save_change_Button.clicked.connect(self.save_draw_change)    # Сохранение изменений компонента(чертежа)
         self.add_button.clicked.connect(self.add_element)                   # Добавить элемент в сборку
         self.sp_table.itemClicked.connect(self.link_new_element)            # Указание ссылки для элемента
-        self.save_change_Button_sp.ckicked.connect(self.save_new_element)   # Нажатие на кнопку сохранить изменения
+        self.save_change_Button_sp.clicked.connect(self.save_new_element)   # Нажатие на кнопку сохранить изменения
 
 
 # Запуск
