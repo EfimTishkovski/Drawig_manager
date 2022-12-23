@@ -14,6 +14,8 @@ from controller import *
 gl_base = ''  # Глобальная переменная для имени активной базы
 gl_cursor = ''  # Глобальный курсор
 
+#buf_current_sp_data = [] # Буферная перемменая для считывания данных из таблибы СП
+
 
 # Функция подключения к базе
 def connection_base(link):
@@ -137,11 +139,17 @@ class Main_window(QMainWindow):
 
         # Заполнение данными таблицы
         if items_component:
+            self.buf_current_sp_data = []
+            buf = []
             self.sp_table.setRowCount(len(items_component))  # Установка количества строк
             # Передача данных в таблицу
             for row in range(len(items_component)):
+                temp = []
                 for column in range(len(items_component[row])):
                     self.sp_table.setItem(row, column, QtWidgets.QTableWidgetItem(str(items_component[row][column])))
+                    temp.append(str(items_component[row][column]))
+                buf.append(temp)
+            self.buf_current_sp_data.extend(buf)
             self.sp_table.resizeColumnsToContents()  # Подгонка размеров колонок по содержимому
         else:
             self.sp_table.clear()
@@ -244,6 +252,7 @@ class Main_window(QMainWindow):
         return new_link
 
     # Функция добавленя элемента
+    # Добавляет пустую строку для ввода
     def add_element(self):
         row_count = self.sp_table.rowCount()        # Установка количества строк
         self.sp_table.insertRow(row_count)
@@ -265,7 +274,15 @@ class Main_window(QMainWindow):
 
     # Функция сохранения изменений
     def save_new_element(self):
-        print('данные', self.get_data_from_table())
+        new_data = self.get_data_from_table()
+        old_data = self.buf_current_sp_data
+        dif = []       # Массив для разницы данных
+        for line in new_data:
+            if line in old_data:
+                continue
+            else:
+                dif.append(line)
+        print('данные', dif)
 
     # Функция получения данных из таблицы
     def get_data_from_table(self):
@@ -308,6 +325,7 @@ class Main_window(QMainWindow):
         self.work_dir = settings[0]['work_dir']  # Рабочая папка #'D:/G5/PY/Drawig_manager/draw_lib/'
         self.base = settings[1]['base']  # База
         self.drawing_edit_flag = False  # Флаг редактирования чертежа
+        self.buf_current_sp_data = []   # Буферная перемменая для считывания данных из таблибы СП
 
         connection_base(self.base)  # Соединение с базой
 

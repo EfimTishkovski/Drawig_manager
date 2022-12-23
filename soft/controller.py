@@ -225,7 +225,7 @@ def link_of_drawing(cursor, number_drawing):
     data = cursor.fetchall()
     return data[0]
 
-
+# Возможно не используется
 def show_drawing(link, work_dir, user_pdf_program):
     """
     Функция открытия чертежа
@@ -257,4 +257,5 @@ def show_drawing(link, work_dir, user_pdf_program):
 
 
 if __name__ == "__main__":
-    print(settings_load())
+    new = [['Т5.1-10.11.002-А', 'Лонжерон', '1', 'None', 'part'], ['Т5.1-10.11.008-А', 'Стенка', '1', 'None', 'part'], ['23', 'домик', '7', '', '']]
+    old = [['Т5.1-10.11.002-А', 'Лонжерон', '1', 'None', 'part'], ['Т5.1-10.11.008-А', 'Стенка', '1', 'None', 'part']]
