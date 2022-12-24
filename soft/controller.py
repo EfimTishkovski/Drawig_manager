@@ -132,6 +132,7 @@ def model(cursor_in_model, mode='generate'):
     if mode == 'update':
         pass
 
+
 def settings_load():
     """
     Функция загрузки настроек
@@ -155,6 +156,7 @@ def settings_load():
         out = []
         return out
 
+
 def update_settings(name_setting, new_state):
     """
     Функция обновления настроек
@@ -174,43 +176,77 @@ def update_settings(name_setting, new_state):
     except:
         return False
 
-def write_to_base(base, cursor, new_data, old_data):
+
+def write_to_base(base, cursor, new_data='', old_data='', mode=''):
     """
     Функция записи в основную базу
     Структура массивов new_data и old_data:
     ({number: 'Д-00.00.000-Ы'}, {name: 'странная деталь'}, {link: 'странное место'})
+    перевести на {'number': 'Д-00.00.000-Ы', 'name': 'странная деталь', 'link': 'странное место', 'attribute': 'part'}
+    для добавления нового (add)
+    {'number': 'Д-00.00.001-Ы', 'name': 'странная деталь', 'link': 'странное место', 'attribute': 'part',
+     'ass': 'ДE-10.00.000', 'quantity': 2}
+    :param new_data:
+    :param old_data:
+    :param mode: режим, что делаем(add добавить, edit редактировать, delete удалить)
     :param base: Объект базы
     :param cursor: Объект курсора
     :param data: данные для записи
     :return: успешно / неуспешно
     """
     try:
-        change_attribute = []
-        for item in zip(old_data, new_data):
-            a = list(item[0].values())[0]
-            b = list(item[1].values())[0]
-            if a != b:
-                change_attribute.append(list(item[0].keys())[0])
+        if mode == 'edit':
+            # Редактирование существующего компонента
+            # Определение заменяемых атрибутов (номер/имя/ссылка)
+            change_attribute = []
+            for item in zip(old_data, new_data):
+                a = list(item[0].values())[0]
+                b = list(item[1].values())[0]
+                if a != b:
+                    change_attribute.append(list(item[0].keys())[0])
 
-        print(change_attribute)
+            # print(change_attribute)
 
-        # Внесение изменений в базу
-        for attribute in change_attribute:
-            if attribute == 'number':
-                pass
-            elif attribute == 'name':
-                query = 'UPDATE components SET name = ?, link = ? WHERE number = ?'
-                cursor.execute(query, (new_data['name'], new_data['number']))
-                base.commit()
-            elif attribute == 'link':
-                query = 'UPDATE components SET link = ?, link = ? WHERE number = ?'
-                cursor.execute(query, (new_data['name'], new_data['number']))
-                base.commit()
+            # Внесение изменений в базу
+            for attribute in change_attribute:
+                if attribute == 'number':
+                    pass
+                elif attribute == 'name':
+                    query = 'UPDATE components SET name = ?, link = ? WHERE number = ?'
+                    cursor.execute(query, (new_data['name'], new_data['number']))
+                    base.commit()
+                elif attribute == 'link':
+                    query = 'UPDATE components SET link = ?, link = ? WHERE number = ?'
+                    cursor.execute(query, (new_data['name'], new_data['number']))
+                    base.commit()
 
-        return True
+            return True
+        elif mode == 'add':
+            # Добавление нового
+            # old_data не используется
+
+            # Добавить проверку корректности данных
+            # Добавить проверку уже наличие в базе
+
+            # Добавление в таблицу компонентов
+            query = 'INSERT INTO components (number, name, link, attribute) VALUES (?, ?, ?, ?)'
+            cursor.execute(query, (new_data['number'], new_data['link'], new_data['link'], new_data['attribute']))
+            base.commit()
+
+            # Добавление в таблицу связей
+            query_connections = 'INSERT INTO connections (component, included, quantity) VALUES (?, ?, ?)'
+            cursor.execute(query_connections, (new_data['number'], new_data['ass'], new_data['quantity']))
+            base.commit()
+
+            return True
+
+        elif mode == 'delete':
+            # Удаление компонента
+            pass
     except sqlite3.Error as error:
         print(error)
         return False
+
 
 # Возможно не используется
 def link_of_drawing(cursor, number_drawing):
@@ -221,9 +257,10 @@ def link_of_drawing(cursor, number_drawing):
     :return: ссылка из базы
     """
     query = 'SELECT link FROM components WHERE number = ?'
-    cursor.execute(query, (number_drawing, ))
+    cursor.execute(query, (number_drawing,))
     data = cursor.fetchall()
     return data[0]
+
 
 # Возможно не используется
 def show_drawing(link, work_dir, user_pdf_program):
@@ -243,10 +280,10 @@ def show_drawing(link, work_dir, user_pdf_program):
         # Открытие чертежа
         if user_pdf_program:
             pass
-                # Открытие прогой юзера
-                # path_to_acrobat = self.patch_to_pdf  # Путь к проге заданной пользователем
-                # process = subprocess.Popen([path_to_acrobat, '/A', 'page = ALL', link], shell=False, stdout=subprocess.PIPE)
-                # process.wait()
+            # Открытие прогой юзера
+            # path_to_acrobat = self.patch_to_pdf  # Путь к проге заданной пользователем
+            # process = subprocess.Popen([path_to_acrobat, '/A', 'page = ALL', link], shell=False, stdout=subprocess.PIPE)
+            # process.wait()
         else:
             # Открытие прогой по умолчанию
             full_path = work_dir + link
@@ -257,5 +294,6 @@ def show_drawing(link, work_dir, user_pdf_program):
 
 
 if __name__ == "__main__":
-    new = [['Т5.1-10.11.002-А', 'Лонжерон', '1', 'None', 'part'], ['Т5.1-10.11.008-А', 'Стенка', '1', 'None', 'part'], ['23', 'домик', '7', '', '']]
+    new = [['Т5.1-10.11.002-А', 'Лонжерон', '1', 'None', 'part'], ['Т5.1-10.11.008-А', 'Стенка', '1', 'None', 'part'],
+           ['23', 'домик', '7', '', '']]
     old = [['Т5.1-10.11.002-А', 'Лонжерон', '1', 'None', 'part'], ['Т5.1-10.11.008-А', 'Стенка', '1', 'None', 'part']]

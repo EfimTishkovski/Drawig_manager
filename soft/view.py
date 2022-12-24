@@ -138,6 +138,7 @@ class Main_window(QMainWindow):
             items_component = []
 
         # Заполнение данными таблицы
+        self.current_sp_number = ''
         if items_component:
             self.buf_current_sp_data = []
             buf = []
@@ -149,8 +150,9 @@ class Main_window(QMainWindow):
                     self.sp_table.setItem(row, column, QtWidgets.QTableWidgetItem(str(items_component[row][column])))
                     temp.append(str(items_component[row][column]))
                 buf.append(temp)
-            self.buf_current_sp_data.extend(buf)
             self.sp_table.resizeColumnsToContents()  # Подгонка размеров колонок по содержимому
+            self.buf_current_sp_data.extend(buf)     # Передача данных в буферный массив (для отслеживания изменений)
+            self.current_sp_number = number          # Получение номера редактируемой сборки
         else:
             self.sp_table.clear()
 
@@ -193,7 +195,7 @@ class Main_window(QMainWindow):
             for line in self.data_connections:
                 for cell in line['included']:
                     if cell[0] == number:
-                        incl = line['number']
+                        incl = line['number']   # Номер содержащей сборки
                         break
             self.edit_assembly(number=incl)
         except:
@@ -283,6 +285,10 @@ class Main_window(QMainWindow):
             else:
                 dif.append(line)
         print('данные', dif)
+        if dif:
+            pass
+        else:
+            self.statusBar().showMessage('Нет новых данных')
 
     # Функция получения данных из таблицы
     def get_data_from_table(self):
@@ -326,6 +332,7 @@ class Main_window(QMainWindow):
         self.base = settings[1]['base']  # База
         self.drawing_edit_flag = False  # Флаг редактирования чертежа
         self.buf_current_sp_data = []   # Буферная перемменая для считывания данных из таблибы СП
+        self.current_sp_number = ''     # Номер редактируемой сборки
 
         connection_base(self.base)  # Соединение с базой
 
