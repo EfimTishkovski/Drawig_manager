@@ -5,7 +5,8 @@ import json
 import subprocess
 
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog
+from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog, QMessageBox
+from PyQt5.QtGui import QIcon
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import Qt
 
@@ -16,6 +17,14 @@ gl_cursor = ''  # Глобальный курсор
 
 #buf_current_sp_data = [] # Буферная перемменая для считывания данных из таблибы СП
 
+# Функция окошка инфосообщения
+def message_window(messege, title='Внимание!'):
+    message_box = QMessageBox()
+    message_box.setText(messege)
+    message_box.setWindowTitle(title)
+    message_box.setIcon(QMessageBox.Warning)
+    message_box.setWindowIcon(QIcon('curwed_line.png'))
+    message_box.exec_()
 
 # Функция подключения к базе
 def connection_base(link):
@@ -278,6 +287,7 @@ class Main_window(QMainWindow):
     def save_new_element(self):
         new_data = self.get_data_from_table()
         old_data = self.buf_current_sp_data
+        # Переработать формат данных в нормальный словарь
         dif = []       # Массив для разницы данных
         for line in new_data:
             if line in old_data:
@@ -286,7 +296,12 @@ class Main_window(QMainWindow):
                 dif.append(line)
         print('данные', dif)
         if dif:
-            pass
+            for line in dif:
+                answer = write_to_base(base=gl_base, cursor=gl_cursor, new_data=line, mode='add')
+                if answer[0]:
+                    print(answer[1])
+                else:
+                    print(answer[1])
         else:
             self.statusBar().showMessage('Нет новых данных')
 

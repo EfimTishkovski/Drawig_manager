@@ -225,27 +225,37 @@ def write_to_base(base, cursor, new_data='', old_data='', mode=''):
             # Добавление нового
             # old_data не используется
 
+            # Добавление компоненита "сборка"
+
             # Добавить проверку корректности данных
-            # Добавить проверку уже наличие в базе
 
-            # Добавление в таблицу компонентов
-            query = 'INSERT INTO components (number, name, link, attribute) VALUES (?, ?, ?, ?)'
-            cursor.execute(query, (new_data['number'], new_data['link'], new_data['link'], new_data['attribute']))
-            base.commit()
+            # Проверка на наличие в базе
+            search_query = 'SELECT number FROM components WHERE number = ?'
+            cursor.execute(search_query, (new_data['number'], ))
+            answer = cursor.fetchone()
+            if answer:
+                return False, f"{new_data['number']} Номер уже есть в базе"
+            else:
+                print('свободно')
 
-            # Добавление в таблицу связей
-            query_connections = 'INSERT INTO connections (component, included, quantity) VALUES (?, ?, ?)'
-            cursor.execute(query_connections, (new_data['number'], new_data['ass'], new_data['quantity']))
-            base.commit()
+                # Добавление в таблицу компонентов
+                query = 'INSERT INTO components (number, name, link, attribute) VALUES (?, ?, ?, ?)'
+                cursor.execute(query, (new_data['number'], new_data['link'], new_data['link'], new_data['attribute']))
+                base.commit()
 
-            return True
+                # Добавление в таблицу связей
+                query_connections = 'INSERT INTO connections (component, included, quantity) VALUES (?, ?, ?)'
+                cursor.execute(query_connections, (new_data['number'], new_data['ass'], new_data['quantity']))
+                base.commit()
+
+                return True, f"{new_data['number']} add_ok"
 
         elif mode == 'delete':
             # Удаление компонента
             pass
     except sqlite3.Error as error:
         print(error)
-        return False
+        return False, error
 
 
 # Возможно не используется
