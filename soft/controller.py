@@ -240,7 +240,7 @@ def write_to_base(base, cursor, new_data='', old_data='', mode=''):
 
                 # Добавление в таблицу компонентов
                 query = 'INSERT INTO components (number, name, link, attribute) VALUES (?, ?, ?, ?)'
-                cursor.execute(query, (new_data['number'], new_data['link'], new_data['link'], new_data['attribute']))
+                cursor.execute(query, (new_data['number'], new_data['name'], new_data['link'], new_data['attribute']))
                 base.commit()
 
                 # Добавление в таблицу связей

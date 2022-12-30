@@ -268,8 +268,14 @@ class Main_window(QMainWindow):
         row_count = self.sp_table.rowCount()        # Установка количества строк
         self.sp_table.insertRow(row_count)
         column_count = self.sp_table.columnCount()  # Установка количества столбцов
+
+        type_box = QtWidgets.QComboBox()
+        type_box.addItems(['part', 'assembly', 'gost', 'outsource'])
+
         for num in range(column_count):
             self.sp_table.setItem(row_count, num, QtWidgets.QTableWidgetItem(str('')))   # Мнимое заполнение, для удобства
+
+        self.sp_table.setCellWidget(row_count, column_count - 1, type_box)       # Добавление комбобокса в последнюю ячейку
 
     # Функция задания ссылки для нового элемента
     def link_new_element(self, item):
@@ -293,7 +299,8 @@ class Main_window(QMainWindow):
             if line in old_data:
                 continue
             else:
-                dif.append(line)  # переписать формат данных на обычный словарь
+                dif.append({'number': line[0], 'name': line[1], 'quantity': line[2],
+                           'link': line[3], 'attribute': line[4], 'ass': self.current_sp_number})
         print('данные', dif)
         if dif:
             for line in dif:
@@ -322,16 +329,16 @@ class Main_window(QMainWindow):
 
     """
     Дневник разработчика =)
-    Убрать окно редактирования чертежа
-    Редактирование чертежей (номер, имя, ссылка) сделать в таблице сборки 
     
+    Редактирование чертежей (номер, имя, ссылка) сделать в таблице сборки 
     Подумать над первичным входжением ?
     
     Дальнейшая работа над добавлением/удалением детали. Сохранение изменений в базе (в работе 28.12.22)
-    Остановился на формате данных переменная dif в обычный словарь {}  сначала по одному потом по несколько, сделать 
-    цикл в view.py
+     
+    dif цикл в view.py
+    Сделан комбобокс выбора типа компонента, сделать считывание его покозаний
+    добавление по одному работает, внедрить туда комбобокс
     
-    Отслеживать изменения таблицы сборки, находить разницу и вносить изменения в БД
     """
 
     def __init__(self):
