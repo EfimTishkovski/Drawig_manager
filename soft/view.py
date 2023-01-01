@@ -276,8 +276,9 @@ class Main_window(QMainWindow):
             self.sp_table.setItem(row_count, num, QtWidgets.QTableWidgetItem(str('')))   # Мнимое заполнение, для удобства
 
         self.sp_table.setCellWidget(row_count, column_count - 1, type_box)       # Добавление комбобокса в последнюю ячейку
+        self.sp_table.resizeColumnsToContents()
 
-    # Функция задания ссылки для нового элемента
+        # Функция задания ссылки для нового элемента
     def link_new_element(self, item):
         try:
             if item.column() == 3:
@@ -295,20 +296,24 @@ class Main_window(QMainWindow):
         old_data = self.buf_current_sp_data
         # Переработать формат данных в нормальный словарь
         dif = []       # Массив для разницы данных
+        count = 0
         for line in new_data:
+            count += 1
             if line in old_data:
                 continue
             else:
                 dif.append({'number': line[0], 'name': line[1], 'quantity': line[2],
-                           'link': line[3], 'attribute': line[4], 'ass': self.current_sp_number})
+                           'link': line[3], 'attribute': line[4], 'ass': self.current_sp_number,
+                            'attribute': self.sp_table.cellWidget(count - 1, 4).currentText()})
         print('данные', dif)
+        # Сохранение циклом если новых строк сразу несколько
         if dif:
             for line in dif:
                 answer = write_to_base(base=gl_base, cursor=gl_cursor, new_data=line, mode='add')
                 if answer[0]:
-                    print(answer[1])
+                    self.statusBar().showMessage(answer[1])  # Переделать на инфо окно
                 else:
-                    print(answer[1])
+                    self.statusBar().showMessage(answer[1])
         else:
             self.statusBar().showMessage('Нет новых данных')
 
@@ -336,8 +341,7 @@ class Main_window(QMainWindow):
     Дальнейшая работа над добавлением/удалением детали. Сохранение изменений в базе (в работе 28.12.22)
      
     dif цикл в view.py
-    Сделан комбобокс выбора типа компонента, сделать считывание его покозаний
-    добавление по одному работает, внедрить туда комбобокс
+    Добавить обновление дерева при добавлении новых компонентов
     
     """
 

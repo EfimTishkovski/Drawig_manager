@@ -233,11 +233,12 @@ def write_to_base(base, cursor, new_data='', old_data='', mode=''):
             search_query = 'SELECT number FROM components WHERE number = ?'
             cursor.execute(search_query, (new_data['number'], ))
             answer = cursor.fetchone()
+            # Добавить раздельное для детали и сборки
+
             if answer:
                 return False, f"{new_data['number']} Номер уже есть в базе"
-            else:
-                print('свободно')
-
+            # Для детали
+            elif answer is None and new_data['attribute'] == 'part':
                 # Добавление в таблицу компонентов
                 query = 'INSERT INTO components (number, name, link, attribute) VALUES (?, ?, ?, ?)'
                 cursor.execute(query, (new_data['number'], new_data['name'], new_data['link'], new_data['attribute']))
@@ -248,7 +249,26 @@ def write_to_base(base, cursor, new_data='', old_data='', mode=''):
                 cursor.execute(query_connections, (new_data['number'], new_data['ass'], new_data['quantity']))
                 base.commit()
 
-                return True, f"{new_data['number']} add_ok"
+                return True, f"{new_data['number']} успешно добавлена"
+
+            # Для сборки
+            elif answer is None and new_data['attribute'] == 'assembly':
+                # Добавление в таблицу компонентов
+                query = 'INSERT INTO components (number, name, link, attribute) VALUES (?, ?, ?, ?)'
+                cursor.execute(query, (new_data['number'], new_data['name'], new_data['link'], new_data['attribute']))
+                base.commit()
+
+                # Добавление в таблицу связей
+                query_connections = 'INSERT INTO connections (component, included, quantity) VALUES (?, ?, ?)'
+                cursor.execute(query_connections, (new_data['number'], new_data['ass'], new_data['quantity']))
+                base.commit()
+
+                # Добавить одну пустую строку чтобы сборка была сборкой
+                query_connections = 'INSERT INTO connections (component, included, quantity) VALUES (?, ?, ?)'
+                cursor.execute(query_connections, ('', '', ''))
+                base.commit()
+
+                return True, f"{new_data['number']} успешно добавлена"
 
         elif mode == 'delete':
             # Удаление компонента
