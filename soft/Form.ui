@@ -432,6 +432,32 @@ border-color: rgb(255, 85, 127);</string>
      </property>
     </widget>
    </widget>
+   <widget class="QPushButton" name="update_button">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>580</y>
+      <width>50</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(170, 255, 127);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>update.png</normaloff>update.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>40</width>
+      <height>40</height>
+     </size>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

@@ -331,6 +331,9 @@ class Main_window(QMainWindow):
 
         return out
 
+    # Обновление дерева
+    def update_tree(self):
+        model(gl_cursor, mode='generate')
 
     """
     Дневник разработчика =)
@@ -382,13 +385,14 @@ class Main_window(QMainWindow):
         self.treeWidget.itemClicked.connect(self.click_line)  # Обработчик нажатия на строку
         # self.treeWidget.itemDoubleClicked.connect(self.dublle_click_item)
         self.checkBox_edit.stateChanged.connect(self.draw_edit_state)  # Обработчик состояния чекбокса редактирования
-        self.work_dir_checkBox.stateChanged.connect(self.work_dir_state)  # Обработчик состояния чекбокса рабочей папки
-        self.base_checkBox.stateChanged.connect(self.work_base_state)  # Обработчик состояния чекбокса базы
+        self.work_dir_checkBox.stateChanged.connect(self.work_dir_state)    # Обработчик состояния чекбокса рабочей папки
+        self.base_checkBox.stateChanged.connect(self.work_base_state)       # Обработчик состояния чекбокса базы
         # self.new_link_Button.clicked.connect(self.new_link)               # Указание новой ссылки на чертёж
         # self.save_change_Button.clicked.connect(self.save_draw_change)    # Сохранение изменений компонента(чертежа)
         self.add_button.clicked.connect(self.add_element)                   # Добавить элемент в сборку
         self.sp_table.itemClicked.connect(self.link_new_element)            # Указание ссылки для элемента
         self.save_change_Button_sp.clicked.connect(self.save_new_element)   # Нажатие на кнопку сохранить изменения
+        self.update_button.clicked.connect(self.update_tree)                # Кнопка обновить
 
 
 # Запуск
