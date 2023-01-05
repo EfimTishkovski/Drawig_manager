@@ -49,7 +49,9 @@ def get_data_from_base(cursor):
                 temp.append(component[0])
                 temp_enlarged.append((component[0], name, component[2], link, attribute))
         out_connections.append({'number': line, 'included': temp.copy()})
+        out_connections_enlarged.append({'number': line, 'included': temp_enlarged.copy()})
         temp.clear()
+        temp_enlarged.clear()
     return out_components, out_connections, out_connections_enlarged
 
 
