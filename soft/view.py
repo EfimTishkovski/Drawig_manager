@@ -262,7 +262,7 @@ class Main_window(QMainWindow):
         new_link = new_link.split('/')[-1]
         return new_link
 
-    # Функция добавленя элемента
+    # Функция добавления элемента
     # Добавляет пустую строку для ввода
     def add_element(self):
         row_count = self.sp_table.rowCount()        # Установка количества строк
@@ -372,12 +372,16 @@ class Main_window(QMainWindow):
 
         # Получение данных из базы по компонентам и связям
         try:
-            self.data_components, self.data_connections = get_data_from_base(gl_cursor)
+            self.massive_data = get_data_from_base(gl_cursor)
+            self.data_components = self.massive_data[0]
+            self.data_connections = self.massive_data[1]
+            self.data_connections_enl = self.massive_data[2]
             print('Данные из базы получены')
         except:
             self.data_components = []
             self.data_connections = []
-            print('Ошибка полученя данных из базы')
+            self.data_connections_enl = []
+            print('Ошибка получения данных из базы')
 
         self.work_dir_line.setText(self.work_dir)
         self.base_line.setText(self.base)

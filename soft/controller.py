@@ -24,12 +24,14 @@ def get_data_from_base(cursor):
     query_for_connections = 'SELECT * FROM connections'
     cursor.execute(query_for_connections)
     data_connections = cursor.fetchall()
-    included_mass = []  # Массив для номеров сборок
+    included_mass = []            # Массив для номеров сборок
     out_connections = []
+    out_connections_enlarged = [] # Массив для расширенных данных
     for line in data_connections:
         included_mass.append(line[1])
     included_set = set(included_mass)
     temp = []
+    temp_enlarged = []
     for line in included_set:
         for component in data_connections:
             if line == component[1]:
@@ -45,10 +47,10 @@ def get_data_from_base(cursor):
                     link = ''
                     attribute = ''
                 temp.append(component[0])
-                #temp.append((component[0], name, component[2], link, attribute))
+                temp_enlarged.append((component[0], name, component[2], link, attribute))
         out_connections.append({'number': line, 'included': temp.copy()})
         temp.clear()
-    return out_components, out_connections
+    return out_components, out_connections, out_connections_enlarged
 
 
 def model(cursor_in_model, mode='generate'):
@@ -60,7 +62,10 @@ def model(cursor_in_model, mode='generate'):
     """
     # Создание
     if mode == 'generate':
-        data_components, data_connections = get_data_from_base(cursor_in_model)  # Получение данных из базы
+        massive_data = get_data_from_base(cursor_in_model)  # Получение данных из базы
+        data_components = massive_data[0]
+        data_connections = massive_data[1]
+        data_connections_enl = massive_data[2]  # ?
         mass_app = []  # Массив модели
         for line in data_components:
             if line['level'] == '0':
@@ -226,7 +231,7 @@ def write_to_base(base, cursor, new_data='', old_data='', mode=''):
             # Добавление нового
             # old_data не используется
 
-            # Добавление компоненита "сборка"
+            # Добавление компонента "сборка"
 
             # Добавить проверку корректности данных
 
