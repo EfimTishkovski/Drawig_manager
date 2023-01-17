@@ -139,7 +139,7 @@ class Main_window(QMainWindow):
     # Функция редактирования сборки
     def edit_assembly(self, number):
         items_component = []
-        for line in self.data_connections:
+        for line in self.data_connections_enl:
             if line['number'] == number:
                 items_component.extend(line['included'])
                 break
