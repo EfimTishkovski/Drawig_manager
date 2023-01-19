@@ -38,6 +38,14 @@ def connection_base(link):
     except:
         print('Соединения с базой нет')
 
+# Функция отключения от базы
+def disconnection_base(base, cursor):
+    try:
+        cursor.close()
+        base.close()
+        print('База отключена')
+    except:
+        print('Ошибка закрытия базы')
 
 class Main_window(QMainWindow):
 
@@ -202,10 +210,9 @@ class Main_window(QMainWindow):
         try:
             incl = ''
             for line in self.data_connections:
-                for cell in line['included']:
-                    if cell[0] == number:
-                        incl = line['number']   # Номер содержащей сборки
-                        break
+                if number in line['included']:
+                    incl = line['number']  # Номер содержащей сборки
+                    break
             self.edit_assembly(number=incl)
         except:
             self.statusBar().showMessage('Ошибка редактирования чертежа')
@@ -334,6 +341,8 @@ class Main_window(QMainWindow):
 
     # Обновление дерева
     def update_tree(self):
+        disconnection_base(gl_base, gl_cursor) # недало эффекта
+        connection_base(self.base)
         model(gl_cursor, mode='generate')
 
     """
