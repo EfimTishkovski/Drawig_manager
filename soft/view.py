@@ -284,9 +284,10 @@ class Main_window(QMainWindow):
             if item.column() == 3:
                 row = item.row()
                 direktory = self.work_dir_line.toPlainText()
-                new_link = QFileDialog.getOpenFileName(self, 'Открыть файл', direktory, '*.pdf')[0]
-                new_link = new_link.split('/')[-1]
-                self.sp_table.setItem(row, item.column(), QtWidgets.QTableWidgetItem(new_link))
+                new_link = QFileDialog.getOpenFileName(self, 'Указать новый файл чертежа', direktory, '*.pdf')[0]
+                if new_link:
+                    new_link = new_link.split('/')[-1]
+                    self.sp_table.setItem(row, item.column(), QtWidgets.QTableWidgetItem(new_link))
         except:
             self.statusBar().showMessage('Ошибка назначения ссылки')
 
@@ -344,6 +345,7 @@ class Main_window(QMainWindow):
     Дальнейшая работа над добавлением/удалением детали. Сохранение изменений в базе (в работе 28.12.22)
      
     dif цикл в view.py  func save_new_element
+    дерево обновляется не корректно, для отображения новых данных нужно перезапускать программу
     
     сделать добавление сборки
     
@@ -363,7 +365,7 @@ class Main_window(QMainWindow):
         self.work_dir = settings[0]['work_dir']  # Рабочая папка #'D:/G5/PY/Drawig_manager/draw_lib/'
         self.base = settings[1]['base']  # База
         self.drawing_edit_flag = False  # Флаг редактирования чертежа
-        self.buf_current_sp_data = []   # Буферная перемменая для считывания данных из таблибы СП
+        self.buf_current_sp_data = []   # Буферная переменная для считывания данных из таблицы СП
         self.current_sp_number = ''     # Номер редактируемой сборки
 
         connection_base(self.base)  # Соединение с базой
@@ -384,12 +386,12 @@ class Main_window(QMainWindow):
         self.work_dir_line.setText(self.work_dir)
         self.base_line.setText(self.base)
 
-        self.launch.clicked.connect(self.show_tree_new)
-        self.selectionButton.clicked.connect(self.select_base)  # Указание базы
+        self.launch.clicked.connect(self.show_tree_new)                       # Пуск
+        self.selectionButton.clicked.connect(self.select_base)                # Указание базы
         self.selection_work_dir_Button.clicked.connect(self.select_work_dir)  # Указание рабочей папки
-        self.treeWidget.itemClicked.connect(self.click_line)  # Обработчик нажатия на строку
+        self.treeWidget.itemClicked.connect(self.click_line)                  # Обработчик нажатия на строку
         # self.treeWidget.itemDoubleClicked.connect(self.dublle_click_item)
-        self.checkBox_edit.stateChanged.connect(self.draw_edit_state)  # Обработчик состояния чекбокса редактирования
+        self.checkBox_edit.stateChanged.connect(self.draw_edit_state)       # Обработчик состояния чекбокса редактирования
         self.work_dir_checkBox.stateChanged.connect(self.work_dir_state)    # Обработчик состояния чекбокса рабочей папки
         self.base_checkBox.stateChanged.connect(self.work_base_state)       # Обработчик состояния чекбокса базы
         # self.new_link_Button.clicked.connect(self.new_link)               # Указание новой ссылки на чертёж
