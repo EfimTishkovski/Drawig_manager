@@ -282,8 +282,11 @@ def write_to_base(base, cursor, new_data='', old_data='', mode=''):
             # Для детали
             if new_data['attribute'] == 'part':
                 # Нужен номер детали и сборка куда входит
-                # Поиск по таблице компонентов
-                query_search = 'DELETE connections'
+                # используется old_data
+                # Поиск по таблице компонентов номер детали и куда входит
+                query_search = 'DELETE FROM connections WHERE number = ? AND included = ?;'
+                cursor.execute(query_search, (old_data['number'], old_data['ass']))
+                base.commit()
 
     except sqlite3.Error as error:
         print(error)

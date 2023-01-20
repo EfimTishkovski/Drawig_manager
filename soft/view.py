@@ -344,6 +344,12 @@ class Main_window(QMainWindow):
         # connection_base(self.base)
         model(gl_cursor, mode='generate')
 
+    # Удаление элемента
+    def delete_element(self):
+        pass
+    # Сделать удаление выделенной строки с окошком подтверждения
+
+
     """
     Дневник разработчика =)
     
@@ -415,6 +421,7 @@ class Main_window(QMainWindow):
         self.sp_table.itemClicked.connect(self.link_new_element)            # Указание ссылки для элемента
         self.save_change_Button_sp.clicked.connect(self.save_new_element)   # Нажатие на кнопку сохранить изменения
         self.update_button.clicked.connect(self.update_tree)                # Кнопка обновить
+        self.delete_button.clicked.connect(self.delete_element)             # Кнопка удалить
 
 
 # Запуск
