@@ -279,8 +279,12 @@ def write_to_base(base, cursor, new_data='', old_data='', mode=''):
                 return True, f"{new_data['number']} успешно добавлена"
 
         elif mode == 'delete':
-            # Удаление компонента
-            pass
+            # Для детали
+            if new_data['attribute'] == 'part':
+                # Нужен номер детали и сборка куда входит
+                # Поиск по таблице компонентов
+                query_search = 'DELETE connections'
+
     except sqlite3.Error as error:
         print(error)
         return False, error

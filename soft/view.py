@@ -126,7 +126,6 @@ class Main_window(QMainWindow):
 
             if component_type == 'part':
                 print(component_type)
-                # Допистать вызов содержащей спецификации (куда входит)
                 self.edit_drawing(number=number)
             elif component_type == 'assembly':
                 self.edit_assembly(number=number)
@@ -155,7 +154,7 @@ class Main_window(QMainWindow):
             items_component = []
 
         # Заполнение данными таблицы
-        self.current_sp_number = ''
+        self.current_sp_number = number
         if items_component:
             self.buf_current_sp_data = []
             buf = []
@@ -251,7 +250,7 @@ class Main_window(QMainWindow):
             if answer_metod:
                 self.statusBar().showMessage('База по умолчанию')
             else:
-                self.statusBar().showMessage('Ошибка назаначения базы по умолчанию')
+                self.statusBar().showMessage('Ошибка назначения базы по умолчанию')
 
     # Функция указания пути к рабочей папке
     def select_work_dir(self):
@@ -341,8 +340,8 @@ class Main_window(QMainWindow):
 
     # Обновление дерева
     def update_tree(self):
-        disconnection_base(gl_base, gl_cursor) # недало эффекта
-        connection_base(self.base)
+        # disconnection_base(gl_base, gl_cursor) # недало эффекта
+        # connection_base(self.base)
         model(gl_cursor, mode='generate')
 
     """
