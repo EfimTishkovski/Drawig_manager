@@ -128,6 +128,7 @@ def model(cursor_in_model, mode='generate'):
         # Запись в файл
         with open('model.json', 'w', encoding='utf-8') as model_file:
             json.dump(mass_app, model_file)
+            # Открывать файл и закрывать его принудительно
 
         return mass_app
     # Построение/просмотр
