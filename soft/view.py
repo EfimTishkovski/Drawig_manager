@@ -415,17 +415,25 @@ class Main_window(QMainWindow):
         loadUi('Form.ui', self)
         settings = settings_load()  # Загрузка сохранённых настроек
 
-        # Настройки при запуске
-        # self.drawing_edit_window.setEnabled(False)  # Окно редактирования чертежа не активно
-        self.ass_edit_window.setEnabled(False)  # Окно редактирования сборки не активно
+# ------------------------------------- Настройки при запуске ----------------------------------------------------------
 
-        # Переменные
+        # self.drawing_edit_window.setEnabled(False)  # Окно редактирования чертежа не активно
+        self.ass_edit_window.setEnabled(False)        # Окно редактирования сборки не активно
+
+# ------------------------------------- Настройки при запуске ----------------------------------------------------------
+
+
+# ------------------------------------------- Переменные ---------------------------------------------------------------
+
         self.user_pdf_program = False  # Флаг выбора пользовательской проги для pdf
         self.work_dir = settings[0]['work_dir']  # Рабочая папка #'D:/G5/PY/Drawig_manager/draw_lib/'
         self.base = settings[1]['base']  # База
         self.drawing_edit_flag = False  # Флаг редактирования чертежа
         self.buf_current_sp_data = []  # Буферная переменная для считывания данных из таблицы СП
         self.current_sp_number = ''  # Номер редактируемой сборки
+
+# ------------------------------------------- Переменные ---------------------------------------------------------------
+
 
         connection_base(self.base)  # Соединение с базой
 
@@ -445,21 +453,26 @@ class Main_window(QMainWindow):
         self.work_dir_line.setText(self.work_dir)
         self.base_line.setText(self.base)
 
-        self.launch.clicked.connect(self.show_tree_new)  # Пуск
-        self.selectionButton.clicked.connect(self.select_base)  # Указание базы
+
+# ---------------------------------------- Обработчик кнопок -----------------------------------------------------------
+
+        self.launch.clicked.connect(self.show_tree_new)                       # Пуск
+        self.selectionButton.clicked.connect(self.select_base)                # Указание базы
         self.selection_work_dir_Button.clicked.connect(self.select_work_dir)  # Указание рабочей папки
-        self.treeWidget.itemClicked.connect(self.click_line)  # Обработчик нажатия на строку
+        self.treeWidget.itemClicked.connect(self.click_line)                  # Обработчик нажатия на строку
         # self.treeWidget.itemDoubleClicked.connect(self.dublle_click_item)
         self.checkBox_edit.stateChanged.connect(self.draw_edit_state)  # Обработчик состояния чекбокса редактирования
         self.work_dir_checkBox.stateChanged.connect(self.work_dir_state)  # Обработчик состояния чекбокса рабочей папки
-        self.base_checkBox.stateChanged.connect(self.work_base_state)  # Обработчик состояния чекбокса базы
+        self.base_checkBox.stateChanged.connect(self.work_base_state)       # Обработчик состояния чекбокса базы
         # self.new_link_Button.clicked.connect(self.new_link)               # Указание новой ссылки на чертёж
         # self.save_change_Button.clicked.connect(self.save_draw_change)    # Сохранение изменений компонента(чертежа)
-        self.add_button.clicked.connect(self.add_element)  # Добавить элемент в сборку
-        self.sp_table.itemClicked.connect(self.link_new_element)  # Указание ссылки для элемента
-        self.save_change_Button_sp.clicked.connect(self.save_new_element)  # Нажатие на кнопку сохранить изменения
-        self.update_button.clicked.connect(self.update_tree)  # Кнопка обновить
-        self.delete_button.clicked.connect(self.delete_element)  # Кнопка удалить
+        self.add_button.clicked.connect(self.add_element)                   # Добавить элемент в сборку
+        self.sp_table.itemClicked.connect(self.link_new_element)            # Указание ссылки для элемента
+        self.save_change_Button_sp.clicked.connect(self.save_new_element)   # Нажатие на кнопку сохранить изменения
+        self.update_button.clicked.connect(self.update_tree)                # Кнопка обновить
+        self.delete_button.clicked.connect(self.delete_element)             # Кнопка удалить
+
+# ---------------------------------------- Обработчик кнопок -----------------------------------------------------------
 
 
 # Запуск
