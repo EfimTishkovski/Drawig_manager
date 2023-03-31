@@ -236,14 +236,11 @@ def write_to_base(base, cursor, new_data='', old_data='', mode=''):
 
             # Добавление компонента "сборка"
 
-            # Добавить проверку корректности данных
-
             # Проверка на наличие в базе
             search_query = 'SELECT number FROM components WHERE number = ?'
             cursor.execute(search_query, (new_data['number'], ))
             answer = cursor.fetchone()
             # Добавить раздельное для детали и сборки
-
             if answer:
                 return False, f"{new_data['number']} Номер уже есть в базе"
             # Для детали
@@ -278,16 +275,17 @@ def write_to_base(base, cursor, new_data='', old_data='', mode=''):
                 base.commit()
 
                 return True, f"{new_data['number']} успешно добавлена"
-
         elif mode == 'delete':
             # Для детали
             if new_data['attribute'] == 'part':
                 # Нужен номер детали и сборка куда входит
                 # используется old_data
                 # Поиск по таблице компонентов номер детали и куда входит
-                query_search = 'DELETE FROM connections WHERE number = ? AND included = ?;'
-                cursor.execute(query_search, (old_data['number'], old_data['ass']))
-                base.commit()
+                print('Удалить ', old_data['number'])
+                print('Из ', old_data['ass'])
+                #query_search = 'DELETE FROM connections WHERE number = ? AND included = ?;'
+                #cursor.execute(query_search, (old_data['number'], old_data['ass']))
+                #base.commit()
 
     except sqlite3.Error as error:
         print(error)
