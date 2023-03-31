@@ -3,7 +3,7 @@ import sqlite3
 import json
 import copy
 
-
+# Функция получения данных из базы
 def get_data_from_base(cursor):
     """
     Функция получения данных из базы
@@ -54,7 +54,7 @@ def get_data_from_base(cursor):
         temp_enlarged.clear()
     return out_components, out_connections, out_connections_enlarged
 
-
+# Функция создания модели БД
 def model(cursor_in_model, mode='generate'):
     """
     Функция создания модели БД
@@ -141,7 +141,7 @@ def model(cursor_in_model, mode='generate'):
     if mode == 'update':
         pass
 
-
+# Функция загрузки настроек
 def settings_load():
     """
     Функция загрузки настроек
@@ -165,7 +165,7 @@ def settings_load():
         out = []
         return out
 
-
+# Функция обновления настроек
 def update_settings(name_setting, new_state):
     """
     Функция обновления настроек
@@ -185,7 +185,7 @@ def update_settings(name_setting, new_state):
     except:
         return False
 
-
+# Функция записи в основную базу
 def write_to_base(base, cursor, new_data='', old_data='', mode=''):
     """
     Функция записи в основную базу
@@ -293,7 +293,6 @@ def write_to_base(base, cursor, new_data='', old_data='', mode=''):
         print(error)
         return False, error
 
-
 # Возможно не используется
 def link_of_drawing(cursor, number_drawing):
     """
@@ -306,7 +305,6 @@ def link_of_drawing(cursor, number_drawing):
     cursor.execute(query, (number_drawing,))
     data = cursor.fetchall()
     return data[0]
-
 
 # Возможно не используется
 def show_drawing(link, work_dir, user_pdf_program):

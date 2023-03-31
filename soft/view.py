@@ -142,7 +142,7 @@ class Main_window(QMainWindow):
             else:
                 dif.append({'number': line[0], 'name': line[1], 'quantity': line[2],
                             'link': line[3], 'attribute': line[4], 'ass': self.current_sp_number,
-                            'attribute': self.sp_table.cellWidget(count - 1, 4).currentText()})
+                            'attribute': self.sp_table.cellWidget(count - 1, 4).currentText()})   # ошибка Двойной ключ attribute
         print('данные', dif)
         # Сохранение циклом если новых строк сразу несколько
         if dif:

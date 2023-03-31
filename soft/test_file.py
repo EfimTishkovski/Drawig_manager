@@ -1,6 +1,7 @@
 import sqlite3
 import json
 import controller
+import os
 
 
 #BASE = sqlite3.connect('D:/G5/Drawings/Base data/Т5.1.db')
@@ -51,5 +52,6 @@ if __name__ == '__main__':
     new_data = {'number': 'Т5.1-10.00.092-А', 'name': 'не менее странная деталь', 'link': 'Папка 3/4',
                  'attribute': 'part', 'ass': 'Т5.1-10.11.000-А', 'quantity': '4'}
     controller.write_to_base(base, cursor, new_data=new_data, mode='add')
+
 
 
