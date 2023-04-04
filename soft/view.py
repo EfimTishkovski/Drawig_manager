@@ -381,7 +381,17 @@ class Main_window(QMainWindow):
 
     # Удаление элемента
     def delete_element(self):
-        print(self.current_sp_number)
+        colum_count = self.sp_table.columnCount()  # Определение количества столбцов таблицы
+        item = self.sp_table.currentItem()         # Содержимое куда жмякнул пользователь
+        row = item.row()                           # Номер Строки
+        row_data = []                           # Массив для данных строки, пользователь может жмякнуть на любую ячейку
+        out_data = {}
+        for column in range(0, colum_count):
+            item_cell = self.sp_table.item(row, column)
+            row_data.append(item_cell.text())
+        out_data = {'number' : row_data[0], 'name' : row_data[1], 'link' : row_data[3], 'attribute' : row_data[4],
+                 'ass' : self.current_sp_number, 'quantity' : row_data[2]}
+        print(out_data)
         #write_to_base(base=gl_base, cursor=gl_cursor, old_data='', mode='delete')
 
     # ------------------------------------- Удаление элемента ----------------------------------------------------------
@@ -429,8 +439,8 @@ class Main_window(QMainWindow):
         self.work_dir = settings[0]['work_dir']  # Рабочая папка #'D:/G5/PY/Drawig_manager/draw_lib/'
         self.base = settings[1]['base']  # База
         self.drawing_edit_flag = False  # Флаг редактирования чертежа
-        self.buf_current_sp_data = []  # Буферная переменная для считывания данных из таблицы СП
-        self.current_sp_number = ''  # Номер редактируемой сборки
+        self.buf_current_sp_data = []   # Буферная переменная для считывания данных из таблицы СП
+        self.current_sp_number = ''     # Номер редактируемой сборки
 
 # ------------------------------------------- Переменные ---------------------------------------------------------------
 

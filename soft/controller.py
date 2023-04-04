@@ -278,14 +278,24 @@ def write_to_base(base, cursor, new_data='', old_data='', mode=''):
         elif mode == 'delete':
             # Для детали
             if new_data['attribute'] == 'part':
-                # Нужен номер детали и сборка куда входит
-                # используется old_data
-                # Поиск по таблице компонентов номер детали и куда входит
-                print('Удалить ', old_data['number'])
-                print('Из ', old_data['ass'])
-                #query_search = 'DELETE FROM connections WHERE number = ? AND included = ?;'
-                #cursor.execute(query_search, (old_data['number'], old_data['ass']))
-                #base.commit()
+                try:
+                    # Нужен номер детали и сборка куда входит
+                    # используется old_data
+                    # Поиск по таблице компонентов номер детали и куда входит
+                    # Поиск и удаление вхождений
+                    query_delete_connections = 'DELETE FROM connections WHERE number = ? AND included = ?;'
+                    cursor.execute(query_delete_connections, (old_data['number'], old_data['ass']))
+                    base.commit()
+                    """
+                    # Поиск и удаление из таблицы компонентов
+                    query_delete_components = 'DELETE FROM components WHERE number = ?;'
+                    cursor.execute(query_delete_components, (old_data['number'], ))
+                    base.commit()
+                    """
+                    print(f"Деталь {old_data['number']} удалена из сборки {old_data['ass']}")
+                except:
+                    print('Ошибка удаления детали')
+
 
     except sqlite3.Error as error:
         print(error)
