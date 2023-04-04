@@ -373,7 +373,7 @@ class Main_window(QMainWindow):
         self.sp_table.setCellWidget(row_count, column_count - 1, type_box)  # Добавление комбобокса в последнюю ячейку
         self.sp_table.resizeColumnsToContents()
 
-        # Функция задания ссылки для нового элемента
+    # Функция задания ссылки для нового элемента
 
     # ---------------------------------- Добавление нового элемента ----------------------------------------------------
 
@@ -385,17 +385,21 @@ class Main_window(QMainWindow):
         item = self.sp_table.currentItem()         # Содержимое куда жмякнул пользователь
         row = item.row()                           # Номер Строки
         row_data = []                           # Массив для данных строки, пользователь может жмякнуть на любую ячейку
-        out_data = {}
         for column in range(0, colum_count):
             item_cell = self.sp_table.item(row, column)
             row_data.append(item_cell.text())
         out_data = {'number' : row_data[0], 'name' : row_data[1], 'link' : row_data[3], 'attribute' : row_data[4],
                  'ass' : self.current_sp_number, 'quantity' : row_data[2]}
         print(out_data)
-        #write_to_base(base=gl_base, cursor=gl_cursor, old_data='', mode='delete')
+
+        answer = write_to_base(base=gl_base, cursor=gl_cursor, old_data= out_data, mode='delete')
+        if answer[0]:
+            print(answer[1])
+        else:
+            print(f"Удаление детали {out_data['number']} НЕ ВЫПОЛНЕНО")
+
 
     # ------------------------------------- Удаление элемента ----------------------------------------------------------
-
 
     """
     Дневник разработчика =)
