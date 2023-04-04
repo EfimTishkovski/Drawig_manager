@@ -202,6 +202,7 @@ def write_to_base(base, cursor, new_data='', old_data='', mode=''):
     :param cursor: Объект курсора
     :param data: данные для записи
     :return: успешно / неуспешно
+    формат ответа функции: True, текстовое сообщение  False, текстовое сообщение
     """
     try:
         if mode == 'edit':
@@ -213,8 +214,6 @@ def write_to_base(base, cursor, new_data='', old_data='', mode=''):
                 b = list(item[1].values())[0]
                 if a != b:
                     change_attribute.append(list(item[0].keys())[0])
-
-            # print(change_attribute)
 
             # Внесение изменений в базу
             for attribute in change_attribute:
@@ -284,6 +283,9 @@ def write_to_base(base, cursor, new_data='', old_data='', mode=''):
                 cursor.execute(query_delete_connections, (old_data['number'], old_data['ass']))
                 base.commit()
                 return True, f"Деталь {old_data['number']} удалена из сборки {old_data['ass']}"
+            # Для сборки
+            if old_data['attribute'] == 'assembly':
+                pass
 
 
 
