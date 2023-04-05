@@ -285,8 +285,11 @@ def write_to_base(base, cursor, new_data='', old_data='', mode=''):
                 return True, f"Деталь {old_data['number']} удалена из сборки {old_data['ass']}"
             # Для сборки
             if old_data['attribute'] == 'assembly':
-                pass
-
+                # Удаление из текущей сборки
+                query_delete_connections = 'DELETE FROM connections WHERE component = ? AND included = ?;'
+                cursor.execute(query_delete_connections, (old_data['number'], old_data['ass']))
+                base.commit()
+                return True, f"Сборка {old_data['number']} удалена из сборки {old_data['ass']}"
 
 
     except sqlite3.Error as error:
