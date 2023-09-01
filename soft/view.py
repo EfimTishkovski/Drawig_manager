@@ -224,7 +224,7 @@ class Main_window(QMainWindow):
                 self.show_drawing()
 
     # Функция обработчика нажатия кнопки сохранить изменения
-    def save_draw_change(self):
+    def save_draw_change_a(self):
         pass
 
     # --------------------------------------- Обработчики --------------------------------------------------------------
@@ -283,7 +283,7 @@ class Main_window(QMainWindow):
 
             # Проверка на пустую ссылку
             if component_link is False or component_link is None:
-                self.statusBar().showMessage('Ссылка не задана или не найдена')
+                self.statusBar().showMessage(f' {number} Ссылка не задана или не найдена')
             else:
                 # Открытие чертежа
                 if self.user_pdf_program:
@@ -484,7 +484,9 @@ class Main_window(QMainWindow):
         self.work_dir_checkBox.stateChanged.connect(self.work_dir_state)  # Обработчик состояния чекбокса рабочей папки
         self.base_checkBox.stateChanged.connect(self.work_base_state)       # Обработчик состояния чекбокса базы
         # self.new_link_Button.clicked.connect(self.new_link)               # Указание новой ссылки на чертёж
-        self.save_change_Button.clicked.connect(self.save_draw_change)    # Сохранение изменений компонента(чертежа)
+        #self.save_change_Button_sp.clicked.connect(self.save_draw_change)   # Сохранение изменений компонента(чертежа)
+                                                                            # Нажатие на кнопку сохранить изменения
+
         self.add_button.clicked.connect(self.add_element)                   # Добавить элемент в сборку
         self.sp_table.itemClicked.connect(self.link_new_element)            # Указание ссылки для элемента
         self.save_change_Button_sp.clicked.connect(self.save_new_element)   # Нажатие на кнопку сохранить изменения
