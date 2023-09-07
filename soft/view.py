@@ -144,6 +144,11 @@ class Main_window(QMainWindow):
                             'link': line[3], 'attribute': line[4], 'ass': self.current_sp_number})
                             #'attribute': self.sp_table.cellWidget(count - 1, 4).currentText()})   # ошибка Двойной ключ attribute
         print('данные', dif)
+        # Добавить анализ действий
+        # Работаем с dif (разница)
+        # Проверяем номер если нету, то режим add
+        # Если есть, вносим изменения в существующий компонент режим edit
+        # Сделать запрет на изменение номера существующей детали.
         # Сохранение циклом если новых строк сразу несколько
         if dif:
             for line in dif:
