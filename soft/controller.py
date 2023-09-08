@@ -234,16 +234,18 @@ def write_to_base(base, cursor, new_data='', old_data='', mode=''):
             # old_data не используется
 
             # Добавление компонента "сборка"
-
+            """
             # Проверка на наличие в базе
             search_query = 'SELECT number FROM components WHERE number = ?'
             cursor.execute(search_query, (new_data['number'], ))
             answer = cursor.fetchone()
+            
             # Добавить раздельное для детали и сборки
             if answer:
                 return False, f"{new_data['number']} Номер уже есть в базе"
+            """
             # Для детали
-            elif answer is None and new_data['attribute'] == 'part':
+            if new_data['attribute'] == 'part':
                 # Добавление в таблицу компонентов
                 query = 'INSERT INTO components (number, name, link, attribute) VALUES (?, ?, ?, ?)'
                 cursor.execute(query, (new_data['number'], new_data['name'], new_data['link'], new_data['attribute']))
@@ -257,7 +259,7 @@ def write_to_base(base, cursor, new_data='', old_data='', mode=''):
                 return True, f"{new_data['number']} успешно добавлена"
 
             # Для сборки
-            elif answer is None and new_data['attribute'] == 'assembly':
+            elif new_data['attribute'] == 'assembly':
                 # Добавление в таблицу компонентов
                 query = 'INSERT INTO components (number, name, link, attribute) VALUES (?, ?, ?, ?)'
                 cursor.execute(query, (new_data['number'], new_data['name'], new_data['link'], new_data['attribute']))
@@ -339,6 +341,24 @@ def show_drawing(link, work_dir, user_pdf_program):
         message = 'Ошибка открытия чертежа'
         return message
 
+# Функция поиска компонента в базе (по номеру)
+def base_search(base, cursor, number=''):
+    """
+
+    :param base:
+    :param cursor:
+    :param number: Номер чертежа для поиска
+    :return: True номер свободен (не найден) False номер уже есть (занят)
+    """
+    # Проверка на наличие в базе
+    search_query = 'SELECT number FROM components WHERE number = ?'
+    cursor.execute(search_query, (number,))
+    answer = cursor.fetchone()
+
+    if answer:
+        return False
+    else:
+        return True
 
 if __name__ == "__main__":
     new = [['Т5.1-10.11.002-А', 'Лонжерон', '1', 'None', 'part'], ['Т5.1-10.11.008-А', 'Стенка', '1', 'None', 'part'],
